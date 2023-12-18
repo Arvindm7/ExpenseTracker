@@ -5,7 +5,7 @@ export const MainLayout = styled.div
 `   
     padding: 2rem;
     height: 100%;
-    display: felx;
+    display: flex;
     gap: 2rem;
 `;
 
