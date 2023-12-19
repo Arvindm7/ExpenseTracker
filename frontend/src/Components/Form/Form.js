@@ -9,7 +9,7 @@ import { plus } from "../../utils/icons";
 
 function Form(){
 
-    const {addIncome}=useGlobalContext()
+    const {addIncome,getIncomes}=useGlobalContext()
 
     const [inputState, setInputState] = useState({
         title: '',
@@ -28,6 +28,7 @@ function Form(){
     const handleSubmit=e=>{
         e.preventDefault()
         addIncome(inputState)
+        getIncomes()
     }
 
 
