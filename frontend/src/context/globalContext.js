@@ -18,6 +18,7 @@ export const GlobalProvider=({children})=>{
             .catch((err) =>{
                 setError(err.response.data.message)
             })
+        getIncomes()
     }
 
     const getIncomes = async ()=>{
@@ -26,10 +27,51 @@ export const GlobalProvider=({children})=>{
         console.log(response.data);
 
     }
-    
-    const deleteIncome = async (id) =>{
+    const deleteIncome=async(id)=>{
+        const res=await axios.delete(`${BASE_URL}delete-income/${id}`)
+        getIncomes()
+    }
 
-        const res = await axios.delete(`${BASE_URL}delete-income/${id}`);
+    const totalIncome = () => {
+        let totalIncome = 0;
+        incomes.forEach((income) =>{
+            totalIncome = totalIncome + income.amount
+        })
+
+        return totalIncome;
+    }
+
+    const addExpense = async (income) => {
+        const response = await axios.post(`${BASE_URL}add-expense`, income)
+            .catch((err) =>{
+                setError(err.response.data.message)
+            })
+        getExpenses()
+    }
+
+    const getExpenses = async () => {
+        const response = await axios.get(`${BASE_URL}get-expenses`)
+        setExpenses(response.data)
+        console.log(response.data)
+    }
+
+    const deleteExpense = async (id) => {
+        const res  = await axios.delete(`${BASE_URL}delete-expense/${id}`)
+        getExpenses()
+    }
+
+    const totalExpenses = () => {
+        let totalIncome = 0;
+        expenses.forEach((income) =>{
+            totalIncome = totalIncome + income.amount
+        })
+
+        return totalIncome;
+    }
+
+
+    const totalBalance = () => {
+        return totalIncome() - totalExpenses()
     }
 
     return (
@@ -37,7 +79,14 @@ export const GlobalProvider=({children})=>{
             addIncome,
             getIncomes,
             incomes,
-            deleteIncome
+            deleteIncome,
+            totalIncome,
+            addExpense,
+            getExpenses,
+            deleteExpense,
+            totalExpenses,
+            expenses,
+            totalBalance,
         }}>
             {children}
         </globalContext.Provider>
