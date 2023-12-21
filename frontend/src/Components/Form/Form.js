@@ -9,7 +9,7 @@ import { plus } from "../../utils/icons";
 
 function Form(){
 
-    const {addIncome,getIncomes,error ,setError}=useGlobalContext()
+    const {addIncome,error ,setError}=useGlobalContext()
 
     const [inputState, setInputState] = useState({
         title: '',
