@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { InnerLayout } from "../../styles/Layouts";
 import Chart from '../Chart/Chart'
-import { dollar } from "../../utils/icons";
+import { rupees } from "../../utils/icons";
 import { useGlobalContext } from "../../context/globalContext";
 import History from '../History/History'
 
@@ -25,19 +25,19 @@ function Dashboard(){
                             <div className="income">
                                 <h2>Total Income</h2>
                                 <p>
-                                    {dollar} {totalIncome()}
+                                    {rupees} {totalIncome()}
                                 </p>
                             </div>
                             <div className="expense">
                                 <h2>Total Expense</h2>
                                 <p>
-                                    {dollar} {totalExpenses()}
+                                    {rupees} {totalExpenses()}
                                 </p>
                             </div>
                             <div className="balance">
                                 <h2>Total Balance</h2>
                                 <p>
-                                    {dollar} {totalBalance()}
+                                    {rupees} {totalBalance()}
                                 </p>
                             </div>
 

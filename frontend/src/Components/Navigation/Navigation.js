@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import avatar from '../../img/avatar.png'
 import { menuItems } from '../../utils/menuItems';
-import { signout } from '../../utils/icons';
+
 
 
 function Navigation({ active, setActive }) {
@@ -11,8 +11,8 @@ function Navigation({ active, setActive }) {
             <div className="user-container">
                 <img src={avatar} alt="" />
                 <div className="text">
-                    <h2>Arvind</h2>
-                    <p>Your expenses</p>
+                   
+                    <h2>Track your Spending</h2>
 
                 </div>
             </div>
@@ -30,11 +30,7 @@ function Navigation({ active, setActive }) {
                     </li>
                 })}
             </ul>
-            <div className="bottom-nav">
-                <li>
-                    {signout} Sign Out
-                </li>
-            </div>
+           
 
 
         </NavStyled>
