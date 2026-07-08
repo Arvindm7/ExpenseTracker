@@ -79,8 +79,19 @@ const IncomeStyled=styled.div`
         .incomes{
             flex: 1;
         }
+    }
 
-
+    @media (max-width: 900px) {
+        .total-income {
+            font-size: 1.4rem;
+            span {
+                font-size: 1.8rem;
+            }
+        }
+        .income-content {
+            flex-direction: column;
+        }
+    }
 `;
 
 export default Income

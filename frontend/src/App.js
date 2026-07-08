@@ -1,79 +1,75 @@
-import React,{useState,useMemo} from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
-import bg from './img/bg.png'
+import bg from './img/bg.png';
 import { MainLayout } from "./styles/Layouts";
 import Orb from "./Components/Orb/Orb";
-import Navigation from './Components/Navigation/Navigation'
+import Navigation from './Components/Navigation/Navigation';
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Income from "./Components/Income/Income";
 import Expenses from "./Components/Expenses/Expenses";
 import Transactions from "./Components/Transactions/Transactions";
 import { useGlobalContext } from "./context/globalContext";
 
-
-
-
 function App() {
-  const [active,setActive]=useState(1)
+  const [active, setActive] = useState(1);
+  const { loading } = useGlobalContext();
 
-  const global=useGlobalContext()
-
-  const displayData=()=>{
-    switch(active){
+  const displayData = () => {
+    switch (active) {
       case 1:
-        return <Dashboard/>
-      case 2:  
-        return <Transactions/>
+        return <Dashboard />;
+      case 2:
+        return <Transactions />;
       case 3:
-        return <Income/>
+        return <Income />;
       case 4:
-        return <Expenses/>
+        return <Expenses />;
       default:
-        return <Dashboard/>
-      
-
+        return <Dashboard />;
     }
-  }
+  };
 
-
-  const orbMemo=useMemo(()=>{
-    return <Orb />
-  },[])
-
+  const orbMemo = useMemo(() => {
+    return <Orb />;
+  }, []);
 
   return (
-    <AppStyled  bg = {bg} className="App">
+    <AppStyled bg={bg} className="App">
       {orbMemo}
       <MainLayout>
         <Navigation active={active} setActive={setActive} />
         <main>
           {displayData()}
         </main>
-      </MainLayout>   
+      </MainLayout>
     </AppStyled>
   );
 }
-const AppStyled = styled.div
-`
+
+const AppStyled = styled.div`
   height: 100vh;
   background-image: url(${props => props.bg});
   position: relative;
-  main{
+
+  main {
     flex: 1;
     background: rgba(252, 246, 249, 0.78);
     border: 3px solid #FFFFFF;
     backdrop-filter: blur(4.5px);
     border-radius: 32px;
-    overflow:auto;
+    overflow: auto;
     overflow-x: hidden;
-    &::-webkit-scrollbar{
+
+    &::-webkit-scrollbar {
       width: 0;
     }
   }
 
-}
+  @media (max-width: 900px) {
+    main {
+      border-radius: 20px;
+    }
+  }
 `;
-
-
 
 export default App;

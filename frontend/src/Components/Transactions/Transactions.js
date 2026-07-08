@@ -483,6 +483,35 @@ const TransactionsStyled = styled.div`
             font-weight: 500;
         }
     }
+
+    @media (max-width: 900px) {
+        .summary-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .summary-card .value {
+            font-size: 1.3rem;
+        }
+
+        .filter-controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .filter-group {
+            justify-content: center;
+        }
+
+        .sort-group {
+            justify-content: center;
+        }
+
+        .transaction-row {
+            &:hover {
+                transform: none;
+            }
+        }
+    }
 `;
 
 export default Transactions;

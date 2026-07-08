@@ -317,6 +317,32 @@ const DashboardStyled = styled.div`
         overflow-y: auto;
         max-height: 620px;
     }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .history-col {
+            max-height: 400px;
+        }
+    }
+
+    @media (max-width: 900px) {
+        .stat-cards {
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+        }
+
+        .bottom-row {
+            grid-template-columns: 1fr;
+        }
+    }
 `;
 
 export default Dashboard;
