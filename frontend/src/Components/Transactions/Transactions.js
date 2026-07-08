@@ -19,6 +19,7 @@ function Transactions() {
     useEffect(() => {
         getIncomes();
         getExpenses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Merge, filter, search, and sort all transactions

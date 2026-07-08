@@ -8,11 +8,9 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import Income from "./Components/Income/Income";
 import Expenses from "./Components/Expenses/Expenses";
 import Transactions from "./Components/Transactions/Transactions";
-import { useGlobalContext } from "./context/globalContext";
 
 function App() {
   const [active, setActive] = useState(1);
-  const { loading } = useGlobalContext();
 
   const displayData = () => {
     switch (active) {

@@ -13,6 +13,7 @@ function Dashboard() {
     useEffect(() => {
         getIncomes();
         getExpenses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const balance = totalBalance();

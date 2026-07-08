@@ -8,10 +8,11 @@ import { dateFormat } from "../../utils/dateFormat";
 
 function Income(){
 
-    const {addIncome,incomes,getIncomes,deleteIncome,totalIncome}=useGlobalContext();
+    const {incomes,getIncomes,deleteIncome,totalIncome}=useGlobalContext();
 
     useEffect(()=>{
         getIncomes();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     return (
