@@ -59,9 +59,9 @@ const IncomeStyled=styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        background: #FCF6F9;
-        border: 2px solid #FFFFFF;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        background: ${({ theme }) => theme.bgCard};
+        border: 2px solid ${({ theme }) => theme.borderColor};
+        box-shadow: ${({ theme }) => theme.shadow};
         border-radius: 20px;
         padding: 1rem;
         margin: 1rem 0;

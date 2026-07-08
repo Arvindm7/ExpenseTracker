@@ -110,13 +110,17 @@ const ExpenseFormStyled = styled.form`
         border: none;
         padding: .5rem 1rem;
         border-radius: 5px;
-        border: 2px solid #fff;
-        background: transparent;
+        border: 2px solid ${({ theme }) => theme.borderColor};
+        background: ${({ theme }) => theme.bgInput};
         resize: none;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-        color: rgba(34, 34, 96, 0.9);
+        box-shadow: ${({ theme }) => theme.shadow};
+        color: ${({ theme }) => theme.textPrimary};
+        transition: all 0.3s ease;
         &::placeholder{
-            color: rgba(34, 34, 96, 0.4);
+            color: ${({ theme }) => theme.textPlaceholder};
+        }
+        &:focus{
+            border-color: var(--color-accent);
         }
     }
     .input-control{
@@ -129,16 +133,20 @@ const ExpenseFormStyled = styled.form`
         display: flex;
         justify-content: flex-end;
         select{
-            color: rgba(34, 34, 96, 0.4);
+            color: ${({ theme }) => theme.textSecondary};
             &:focus, &:active{
-                color: rgba(34, 34, 96, 1);
+                color: ${({ theme }) => theme.textPrimary};
+            }
+            option {
+                background: ${({ theme }) => theme.bgCard};
+                color: ${({ theme }) => theme.textPrimary};
             }
         }
     }
 
     .submit-btn{
         button{
-            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+            box-shadow: ${({ theme }) => theme.shadow};
             &:hover{
                 background: var(--color-green) !important;
             }

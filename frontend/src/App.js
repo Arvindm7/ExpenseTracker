@@ -53,12 +53,13 @@ const AppStyled = styled.div`
 
   main {
     flex: 1;
-    background: rgba(252, 246, 249, 0.78);
-    border: 3px solid #FFFFFF;
+    background: ${({ theme }) => theme.bgMain};
+    border: 3px solid ${({ theme }) => theme.borderColor};
     backdrop-filter: blur(4.5px);
     border-radius: 32px;
     overflow: auto;
     overflow-x: hidden;
+    transition: background 0.3s ease, border-color 0.3s ease;
 
     &::-webkit-scrollbar {
       width: 0;

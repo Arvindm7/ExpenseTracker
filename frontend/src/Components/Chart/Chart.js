@@ -1,7 +1,7 @@
 import React from 'react';
 import { Chart as ChartJs, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
 import { dateFormat } from '../../utils/dateFormat';
 
@@ -9,6 +9,11 @@ ChartJs.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 function Chart() {
     const { incomes, expenses } = useGlobalContext();
+    const theme = useTheme();
+
+    const textColor = theme.textSecondary;
+    const mutedColor = theme.textMuted;
+    const gridColor = theme.gridColor;
 
     const data = {
         labels: incomes.map((inc) => {
@@ -24,7 +29,7 @@ function Chart() {
                 tension: 0.4,
                 fill: true,
                 pointBackgroundColor: '#42AD00',
-                pointBorderColor: '#fff',
+                pointBorderColor: theme.bgCard,
                 pointBorderWidth: 2,
                 pointRadius: 4,
                 pointHoverRadius: 6,
@@ -38,7 +43,7 @@ function Chart() {
                 tension: 0.4,
                 fill: true,
                 pointBackgroundColor: '#E74C3C',
-                pointBorderColor: '#fff',
+                pointBorderColor: theme.bgCard,
                 pointBorderWidth: 2,
                 pointRadius: 4,
                 pointHoverRadius: 6,
@@ -63,11 +68,13 @@ function Chart() {
                         size: 12,
                         weight: 600,
                     },
-                    color: 'rgba(34, 34, 96, 0.7)',
+                    color: textColor,
                 }
             },
             tooltip: {
-                backgroundColor: 'rgba(34, 34, 96, 0.9)',
+                backgroundColor: theme.name === 'dark' ? 'rgba(22, 33, 62, 0.95)' : 'rgba(34, 34, 96, 0.9)',
+                titleColor: '#fff',
+                bodyColor: '#fff',
                 titleFont: {
                     family: "'Nunito', sans-serif",
                     size: 13,
@@ -95,12 +102,12 @@ function Chart() {
                         family: "'Nunito', sans-serif",
                         size: 11,
                     },
-                    color: 'rgba(34, 34, 96, 0.4)',
+                    color: mutedColor,
                 }
             },
             y: {
                 grid: {
-                    color: 'rgba(34, 34, 96, 0.06)',
+                    color: gridColor,
                     drawBorder: false,
                 },
                 ticks: {
@@ -108,7 +115,7 @@ function Chart() {
                         family: "'Nunito', sans-serif",
                         size: 11,
                     },
-                    color: 'rgba(34, 34, 96, 0.4)',
+                    color: mutedColor,
                     callback: function(value) {
                         return '₹' + value.toLocaleString('en-IN');
                     }
@@ -129,12 +136,13 @@ function Chart() {
 }
 
 const ChartStyled = styled.div`
-    background: #FCF6F9;
-    border: 2px solid #FFFFFF;
-    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+    background: ${({ theme }) => theme.bgCard};
+    border: 2px solid ${({ theme }) => theme.borderColor};
+    box-shadow: ${({ theme }) => theme.shadow};
     padding: 1rem;
     border-radius: 20px;
     height: 100%;
+    transition: background 0.3s ease, border-color 0.3s ease;
 `;
 
 export default Chart;

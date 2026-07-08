@@ -3,14 +3,16 @@ import styled from 'styled-components';
 import avatar from '../../img/avatar.png';
 import { menuItems } from '../../utils/menuItems';
 import { signout } from '../../utils/icons';
+import { useThemeToggle } from '../../context/themeContext';
 
 function Navigation({ active, setActive }) {
     const [mobileOpen, setMobileOpen] = useState(false);
+    const { isDark, toggle } = useThemeToggle();
 
     return (
         <>
             {/* Mobile hamburger button */}
-            <MobileToggle onClick={() => setMobileOpen(!mobileOpen)}>
+            <MobileToggle onClick={() => setMobileOpen(!mobileOpen)} isDark={isDark}>
                 <i className={`fa-solid fa-${mobileOpen ? 'xmark' : 'bars'}`}></i>
             </MobileToggle>
 
@@ -44,6 +46,11 @@ function Navigation({ active, setActive }) {
                 </ul>
 
                 <div className="bottom-nav">
+                    {/* Theme toggle */}
+                    <li className="theme-toggle" onClick={toggle}>
+                        <i className={`fa-solid fa-${isDark ? 'sun' : 'moon'}`}></i>
+                        <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>
+                    </li>
                     <li>
                         {signout} <span>Sign Out</span>
                     </li>
@@ -62,20 +69,16 @@ const MobileToggle = styled.button`
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    border: 2px solid #FFFFFF;
-    background: rgba(252, 246, 249, 0.95);
+    border: 2px solid ${({ theme }) => theme.borderColor};
+    background: ${({ theme }) => theme.bgNav};
     backdrop-filter: blur(4.5px);
-    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: ${({ theme }) => theme.shadow};
     cursor: pointer;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    color: var(--primary-color);
+    color: ${({ theme }) => theme.textPrimary};
     transition: all 0.3s ease;
-
-    &:hover {
-        background: rgba(252, 246, 249, 1);
-    }
 
     @media (max-width: 900px) {
         display: flex;
@@ -89,7 +92,7 @@ const MobileOverlay = styled.div`
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.3);
+    background: ${({ theme }) => theme.bgOverlay};
     z-index: 999;
 
     @media (max-width: 900px) {
@@ -101,8 +104,8 @@ const NavStyled = styled.nav`
     padding: 2rem 1.5rem;
     width: 280px;
     height: 100%;
-    background: rgba(252, 246, 249, 0.78);
-    border: 3px solid #FFFFFF;
+    background: ${({ theme }) => theme.bgNav};
+    border: 3px solid ${({ theme }) => theme.borderColor};
     backdrop-filter: blur(4.5px);
     border-radius: 32px;
     display: flex;
@@ -110,7 +113,7 @@ const NavStyled = styled.nav`
     justify-content: space-between;
     gap: 2rem;
     flex-shrink: 0;
-    transition: transform 0.3s ease;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 
     .user-container {
         height: 100px;
@@ -124,19 +127,19 @@ const NavStyled = styled.nav`
         height: 70px;
         border-radius: 50%;
         object-fit: cover;
-        background: #fcf6f9;
-        border: 2px solid #FFFFFF;
+        background: ${({ theme }) => theme.bgCard};
+        border: 2px solid ${({ theme }) => theme.borderColor};
         padding: .2rem;
-        box-shadow: 0px 1px 17px rgba(0, 0, 0, 0.06);
+        box-shadow: ${({ theme }) => theme.shadow};
     }
 
     h2 {
-        color: rgba(34, 34, 96, 1);
+        color: ${({ theme }) => theme.textPrimary};
         font-size: 1.1rem;
     }
 
     p {
-        color: rgba(34, 34, 96, .6);
+        color: ${({ theme }) => theme.textSecondary};
     }
 
     .menu-items {
@@ -152,35 +155,35 @@ const NavStyled = styled.nav`
             font-weight: 500;
             cursor: pointer;
             transition: all .3s ease-in-out;
-            color: rgba(34, 34, 96, .6);
+            color: ${({ theme }) => theme.textSecondary};
             padding: 0.6rem 1rem;
             border-radius: 12px;
             position: relative;
 
             i {
-                color: rgba(34, 34, 96, 0.6);
+                color: ${({ theme }) => theme.textSecondary};
                 font-size: 1.3rem;
                 transition: all .3s ease-in-out;
             }
 
             &:hover {
-                color: rgba(34, 34, 96, 0.9);
-                background: rgba(34, 34, 96, 0.04);
+                color: ${({ theme }) => theme.textPrimary};
+                background: ${({ theme }) => theme.navHoverBg};
 
                 i {
-                    color: rgba(34, 34, 96, 0.9);
+                    color: ${({ theme }) => theme.textPrimary};
                 }
             }
         }
     }
 
     .active {
-        color: rgba(34, 34, 96, 1) !important;
-        background: rgba(34, 34, 96, 0.06);
+        color: ${({ theme }) => theme.textPrimary} !important;
+        background: ${({ theme }) => theme.navActiveBg};
         border-radius: 12px;
 
         i {
-            color: rgba(34, 34, 96, 1) !important;
+            color: ${({ theme }) => theme.textPrimary} !important;
         }
 
         &::before {
@@ -191,7 +194,7 @@ const NavStyled = styled.nav`
             transform: translateY(-50%);
             width: 4px;
             height: 60%;
-            background: var(--primary-color);
+            background: ${({ theme }) => theme.name === 'dark' ? '#6C63FF' : '#222260'};
             border-radius: 0 10px 10px 0;
             transition: all 0.3s ease;
         }
@@ -205,7 +208,7 @@ const NavStyled = styled.nav`
             font-weight: 500;
             cursor: pointer;
             transition: all .3s ease-in-out;
-            color: rgba(34, 34, 96, .6);
+            color: ${({ theme }) => theme.textSecondary};
             padding: 0.6rem 1rem;
             border-radius: 12px;
             list-style: none;
@@ -223,6 +226,17 @@ const NavStyled = styled.nav`
                 }
             }
         }
+
+        .theme-toggle {
+            &:hover {
+                color: #F2994A;
+                background: rgba(242, 153, 74, 0.08);
+
+                i {
+                    color: #F2994A;
+                }
+            }
+        }
     }
 
     @media (max-width: 900px) {
@@ -233,7 +247,7 @@ const NavStyled = styled.nav`
         z-index: 1000;
         border-radius: 0 32px 32px 0;
         transform: translateX(-110%);
-        background: rgba(252, 246, 249, 0.98);
+        background: ${({ theme }) => theme.name === 'dark' ? 'rgba(22, 22, 40, 0.98)' : 'rgba(252, 246, 249, 0.98)'};
 
         &.mobile-open {
             transform: translateX(0);

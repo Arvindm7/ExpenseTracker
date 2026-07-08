@@ -38,14 +38,15 @@ display: flex;
 flex-direction: column;
 gap: 1rem;
 .history-item{
-    background: #FCF6F9;
-    border: 2px solid #FFFFFF;
-    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+    background: ${({ theme }) => theme.bgCard};
+    border: 2px solid ${({ theme }) => theme.borderColor};
+    box-shadow: ${({ theme }) => theme.shadow};
     padding: 1rem;
     border-radius: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background 0.3s ease;
 }
 
 

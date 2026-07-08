@@ -131,19 +131,19 @@ const DashboardStyled = styled.div`
     }
 
     .stat-card {
-        background: #FCF6F9;
-        border: 2px solid #FFFFFF;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        background: ${({ theme }) => theme.bgCard};
+        border: 2px solid ${({ theme }) => theme.borderColor};
+        box-shadow: ${({ theme }) => theme.shadow};
         border-radius: 20px;
         padding: 1.2rem;
         display: flex;
         align-items: center;
         gap: 1rem;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: all 0.3s ease;
 
         &:hover {
             transform: translateY(-3px);
-            box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: ${({ theme }) => theme.shadowHover};
         }
     }
 
@@ -186,7 +186,7 @@ const DashboardStyled = styled.div`
 
     .stat-label {
         font-size: 0.8rem;
-        color: rgba(34, 34, 96, 0.5);
+        color: ${({ theme }) => theme.textMuted};
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -251,9 +251,9 @@ const DashboardStyled = styled.div`
     }
 
     .min-max-card {
-        background: #FCF6F9;
-        border: 2px solid #FFFFFF;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        background: ${({ theme }) => theme.bgCard};
+        border: 2px solid ${({ theme }) => theme.borderColor};
+        box-shadow: ${({ theme }) => theme.shadow};
         border-radius: 20px;
         padding: 1.2rem;
         flex: 1;
@@ -282,7 +282,7 @@ const DashboardStyled = styled.div`
 
     .range-label {
         font-size: 0.7rem;
-        color: rgba(34, 34, 96, 0.4);
+        color: ${({ theme }) => theme.textMuted};
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -304,14 +304,14 @@ const DashboardStyled = styled.div`
     .range-divider {
         width: 1px;
         height: 30px;
-        background: rgba(34, 34, 96, 0.1);
+        background: ${({ theme }) => theme.borderActive};
     }
 
     /* History Column */
     .history-col {
-        background: #FCF6F9;
-        border: 2px solid #FFFFFF;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        background: ${({ theme }) => theme.bgCard};
+        border: 2px solid ${({ theme }) => theme.borderColor};
+        box-shadow: ${({ theme }) => theme.shadow};
         border-radius: 20px;
         padding: 1.2rem;
         overflow-y: auto;

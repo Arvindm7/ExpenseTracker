@@ -101,9 +101,9 @@ function IncomeItem({
 }
 
 const IncomeItemStyled  = styled.div`
-    background: #FCF6F9;
-    border: 2px solid #FFFFFF;
-    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+    background: ${({ theme }) => theme.bgCard};
+    border: 2px solid ${({ theme }) => theme.borderColor};
+    box-shadow: ${({ theme }) => theme.shadow};
     border-radius: 20px;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -111,16 +111,17 @@ const IncomeItemStyled  = styled.div`
     align-items: center;
     gap: 1rem;
     width: 100%;
-    color: #222260;
+    color: ${({ theme }) => theme.textPrimary};
+    transition: background 0.3s ease, border-color 0.3s ease;
     .icon{
         width: 80px;
         height: 80px;
         border-radius: 20px;
-        background: #F5F5F5;
+        background: ${({ theme }) => theme.navActiveBg};
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px solid #FFFFFF;
+        border: 2px solid ${({ theme }) => theme.borderColor};
         i{
             font-size: 2.6rem;
         }

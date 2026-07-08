@@ -237,9 +237,9 @@ const TransactionsStyled = styled.div`
     }
 
     .summary-card {
-        background: #FCF6F9;
-        border: 2px solid #FFFFFF;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        background: ${({ theme }) => theme.bgCard};
+        border: 2px solid ${({ theme }) => theme.borderColor};
+        box-shadow: ${({ theme }) => theme.shadow};
         border-radius: 16px;
         padding: 1rem 1.2rem;
         display: flex;
@@ -253,7 +253,7 @@ const TransactionsStyled = styled.div`
 
         .label {
             font-size: 0.85rem;
-            color: rgba(34, 34, 96, 0.5);
+            color: ${({ theme }) => theme.textMuted};
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -287,20 +287,20 @@ const TransactionsStyled = styled.div`
     .search-box {
         display: flex;
         align-items: center;
-        background: #FCF6F9;
-        border: 2px solid #FFFFFF;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        background: ${({ theme }) => theme.bgCard};
+        border: 2px solid ${({ theme }) => theme.borderColor};
+        box-shadow: ${({ theme }) => theme.shadow};
         border-radius: 12px;
         padding: 0.6rem 1rem;
         gap: 0.8rem;
-        transition: border-color 0.3s ease;
+        transition: border-color 0.3s ease, background 0.3s ease;
 
         &:focus-within {
             border-color: var(--primary-color);
         }
 
         i {
-            color: rgba(34, 34, 96, 0.4);
+            color: ${({ theme }) => theme.textMuted};
             font-size: 1rem;
         }
 
@@ -314,7 +314,7 @@ const TransactionsStyled = styled.div`
             color: var(--primary-color);
 
             &::placeholder {
-                color: rgba(34, 34, 96, 0.35);
+                color: ${({ theme }) => theme.textPlaceholder};
             }
         }
 
@@ -322,7 +322,7 @@ const TransactionsStyled = styled.div`
             background: none;
             border: none;
             cursor: pointer;
-            color: rgba(34, 34, 96, 0.4);
+            color: ${({ theme }) => theme.textMuted};
             font-size: 1rem;
             padding: 0.2rem;
             display: flex;
@@ -350,14 +350,14 @@ const TransactionsStyled = styled.div`
 
     .filter-btn {
         padding: 0.4rem 1rem;
-        border: 2px solid rgba(34, 34, 96, 0.14);
+        border: 2px solid ${({ theme }) => theme.borderActive};
         border-radius: 20px;
         background: transparent;
         cursor: pointer;
         font-family: inherit;
         font-size: 0.85rem;
         font-weight: 600;
-        color: rgba(34, 34, 96, 0.6);
+        color: ${({ theme }) => theme.textSecondary};
         transition: all 0.3s ease;
 
         &:hover {
@@ -389,12 +389,12 @@ const TransactionsStyled = styled.div`
 
         select {
             padding: 0.4rem 0.8rem;
-            border: 2px solid rgba(34, 34, 96, 0.14);
+            border: 2px solid ${({ theme }) => theme.borderActive};
             border-radius: 10px;
-            background: transparent;
+            background: ${({ theme }) => theme.bgCard};
             font-family: inherit;
             font-size: 0.85rem;
-            color: rgba(34, 34, 96, 0.6);
+            color: ${({ theme }) => theme.textSecondary};
             cursor: pointer;
             outline: none;
 
@@ -409,11 +409,11 @@ const TransactionsStyled = styled.div`
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid rgba(34, 34, 96, 0.14);
+            border: 2px solid ${({ theme }) => theme.borderActive};
             border-radius: 10px;
             background: transparent;
             cursor: pointer;
-            color: rgba(34, 34, 96, 0.6);
+            color: ${({ theme }) => theme.textSecondary};
             font-size: 1rem;
             transition: all 0.2s ease;
 
@@ -434,16 +434,16 @@ const TransactionsStyled = styled.div`
         display: flex;
         align-items: center;
         gap: 1rem;
-        background: #FCF6F9;
-        border: 2px solid #FFFFFF;
-        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+        background: ${({ theme }) => theme.bgCard};
+        border: 2px solid ${({ theme }) => theme.borderColor};
+        box-shadow: ${({ theme }) => theme.shadow};
         border-radius: 14px;
         padding: 0.8rem 1.2rem;
         transition: all 0.2s ease;
 
         &:hover {
             transform: translateX(4px);
-            box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: ${({ theme }) => theme.shadowHover};
         }
     }
 
@@ -482,8 +482,8 @@ const TransactionsStyled = styled.div`
             font-size: 0.7rem;
             padding: 0.15rem 0.5rem;
             border-radius: 10px;
-            background: rgba(34, 34, 96, 0.08);
-            color: rgba(34, 34, 96, 0.6);
+            background: ${({ theme }) => theme.badgeBg};
+            color: ${({ theme }) => theme.textSecondary};
             font-weight: 600;
             text-transform: capitalize;
         }
@@ -493,7 +493,7 @@ const TransactionsStyled = styled.div`
             align-items: center;
             gap: 0.4rem;
             font-size: 0.8rem;
-            color: rgba(34, 34, 96, 0.4);
+            color: ${({ theme }) => theme.textMuted};
 
             i {
                 font-size: 0.75rem;
@@ -528,7 +528,7 @@ const TransactionsStyled = styled.div`
         align-items: center;
         justify-content: center;
         padding: 3rem;
-        color: rgba(34, 34, 96, 0.3);
+        color: ${({ theme }) => theme.textMuted};
 
         i {
             font-size: 3rem;

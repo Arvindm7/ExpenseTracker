@@ -1,8 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
-export const GlobalStyle = createGlobalStyle
-
-` *{
+export const GlobalStyle = createGlobalStyle`
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -10,9 +9,9 @@ export const GlobalStyle = createGlobalStyle
 }
 
 :root{
-    --primary-color: #222260;
-    --primary-color2: 'color: rgba(34, 34, 96, .6)';
-    --primary-color3: 'color: rgba(34, 34, 96, .4)';
+    --primary-color: ${({ theme }) => theme.textPrimary};
+    --primary-color2: ${({ theme }) => theme.textSecondary};
+    --primary-color3: ${({ theme }) => theme.textMuted};
     --color-green: #42AD00;
     --color-grey: #aaa;
     --color-accent: #F56692;
@@ -23,12 +22,15 @@ body{
     font-family: 'Nunito', sans-serif;
     font-size: clamp(1rem, 1.5vw, 1.2rem);
     overflow: hidden;
-    color: rgba(34, 34, 96, .6);
+    color: ${({ theme }) => theme.textSecondary};
+    background: ${({ theme }) => theme.bg};
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6{
-    color: var(--primary-color);
+    color: ${({ theme }) => theme.textPrimary};
 }
+
 .error{
     color: red;
     animation: shake 0.5s ease-in-out;
@@ -50,6 +52,4 @@ h1, h2, h3, h4, h5, h6{
         }
     }
 }
-
-
 `;

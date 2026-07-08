@@ -29,7 +29,6 @@ function Form(){
     const handleSubmit=e=>{
         e.preventDefault()
         addIncome(inputState)
-        //getIncomes()
         setInputState({
             title: '',
             amount: '',
@@ -109,19 +108,23 @@ const FormStyled=styled.form`
     flex-direction: column;
     gap: 2rem;
     input, textarea, select{
-    font-family: inherit;
-    font-size: inherit;
-    outline: none;
-    border: none;
-    padding: .5rem 1rem;
-    border-radius: 5px;
-    border: 2px solid #fff;
-    background: transparent;
-    resize: none;
-    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
-    color: rgba(34, 34, 96, 0.9);
-    &::placeholder{
-            color: rgba(34, 34, 96, 0.4);
+        font-family: inherit;
+        font-size: inherit;
+        outline: none;
+        border: none;
+        padding: .5rem 1rem;
+        border-radius: 5px;
+        border: 2px solid ${({ theme }) => theme.borderColor};
+        background: ${({ theme }) => theme.bgInput};
+        resize: none;
+        box-shadow: ${({ theme }) => theme.shadow};
+        color: ${({ theme }) => theme.textPrimary};
+        transition: all 0.3s ease;
+        &::placeholder{
+            color: ${({ theme }) => theme.textPlaceholder};
+        }
+        &:focus{
+            border-color: var(--color-accent);
         }
     }
     .input-control{
@@ -133,16 +136,20 @@ const FormStyled=styled.form`
         display: flex;
         justify-content: flex-end;
         select{
-            color: rgba(34, 34, 96, 0.4);
+            color: ${({ theme }) => theme.textSecondary};
             &:focus, &:active{
-                color: rgba(34, 34, 96, 1);
+                color: ${({ theme }) => theme.textPrimary};
+            }
+            option {
+                background: ${({ theme }) => theme.bgCard};
+                color: ${({ theme }) => theme.textPrimary};
             }
         }
     }
 
     .submit-btn{
         button{
-            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+            box-shadow: ${({ theme }) => theme.shadow};
             &:hover{
                 background: var(--color-green) !important;
             }

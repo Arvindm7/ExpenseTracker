@@ -1,13 +1,14 @@
 import React from 'react';
 import { Chart as ChartJs, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
 
 ChartJs.register(ArcElement, Tooltip, Legend);
 
 function DoughnutChart() {
     const { expenses } = useGlobalContext();
+    const theme = useTheme();
 
     // Aggregate expenses by category
     const categoryTotals = {};
@@ -47,7 +48,7 @@ function DoughnutChart() {
                 backgroundColor: backgroundColors,
                 borderColor: backgroundColors.map(c => c + '33'),
                 borderWidth: 3,
-                hoverBorderColor: '#fff',
+                hoverBorderColor: theme.bgCard,
                 hoverBorderWidth: 3,
                 hoverOffset: 8,
                 borderRadius: 4,
@@ -72,11 +73,13 @@ function DoughnutChart() {
                         size: 12,
                         weight: 600
                     },
-                    color: 'rgba(34, 34, 96, 0.7)',
+                    color: theme.textSecondary,
                 }
             },
             tooltip: {
-                backgroundColor: 'rgba(34, 34, 96, 0.9)',
+                backgroundColor: theme.name === 'dark' ? 'rgba(22, 33, 62, 0.95)' : 'rgba(34, 34, 96, 0.9)',
+                titleColor: '#fff',
+                bodyColor: '#fff',
                 titleFont: {
                     family: "'Nunito', sans-serif",
                     size: 13,
@@ -126,9 +129,9 @@ function DoughnutChart() {
 }
 
 const DoughnutStyled = styled.div`
-    background: #FCF6F9;
-    border: 2px solid #FFFFFF;
-    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+    background: ${({ theme }) => theme.bgCard};
+    border: 2px solid ${({ theme }) => theme.borderColor};
+    box-shadow: ${({ theme }) => theme.shadow};
     padding: 1.2rem;
     border-radius: 20px;
     height: 100%;
@@ -161,7 +164,7 @@ const DoughnutStyled = styled.div`
         .total-label {
             display: block;
             font-size: 0.75rem;
-            color: rgba(34, 34, 96, 0.4);
+            color: ${({ theme }) => theme.textMuted};
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -181,7 +184,7 @@ const DoughnutStyled = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        color: rgba(34, 34, 96, 0.25);
+        color: ${({ theme }) => theme.textMuted};
 
         i {
             font-size: 2.5rem;
