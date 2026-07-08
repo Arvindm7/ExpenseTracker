@@ -1,11 +1,12 @@
 import React from 'react';
-import { Chart as ChartJs, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Chart as ChartJs, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 import styled, { useTheme } from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
-import { dateFormat } from '../../utils/dateFormat';
 
-ChartJs.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+ChartJs.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function Chart() {
     const { incomes, expenses } = useGlobalContext();
@@ -15,51 +16,55 @@ function Chart() {
     const mutedColor = theme.textMuted;
     const gridColor = theme.gridColor;
 
-    const allTransactions = [...incomes, ...expenses].sort((a, b) => new Date(a.date) - new Date(b.date));
-    const uniqueDates = [...new Set(allTransactions.map(item => dateFormat(item.date)))];
+    // Build a { "YYYY-MM": { income, expense } } map so every month is grouped once
+    const monthlyTotals = {};
 
-    const incomeData = uniqueDates.map(date => {
-        return incomes
-            .filter(item => dateFormat(item.date) === date)
-            .reduce((sum, item) => sum + item.amount, 0);
+    const addToMonth = (item, type) => {
+        const d = new Date(item.date);
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+
+        if (!monthlyTotals[key]) {
+            monthlyTotals[key] = { income: 0, expense: 0, year: d.getFullYear(), monthIndex: d.getMonth() };
+        }
+        monthlyTotals[key][type] += item.amount;
+    };
+
+    incomes.forEach(item => addToMonth(item, 'income'));
+    expenses.forEach(item => addToMonth(item, 'expense'));
+
+    // Sort months chronologically
+    const sortedKeys = Object.keys(monthlyTotals).sort((a, b) => new Date(a) - new Date(b));
+
+    const labels = sortedKeys.map(key => {
+        const { monthIndex, year } = monthlyTotals[key];
+        return `${MONTH_LABELS[monthIndex]} ${year}`;
     });
 
-    const expenseData = uniqueDates.map(date => {
-        return expenses
-            .filter(item => dateFormat(item.date) === date)
-            .reduce((sum, item) => sum + item.amount, 0);
-    });
+    const incomeData = sortedKeys.map(key => monthlyTotals[key].income);
+    const expenseData = sortedKeys.map(key => monthlyTotals[key].expense);
 
     const data = {
-        labels: uniqueDates,
+        labels,
         datasets: [
             {
                 label: 'Income',
                 data: incomeData,
-                borderColor: '#42AD00',
-                backgroundColor: 'rgba(66, 173, 0, 0.08)',
-                tension: 0.4,
-                fill: true,
-                pointBackgroundColor: '#42AD00',
-                pointBorderColor: theme.bgCard,
-                pointBorderWidth: 2,
-                pointRadius: 4,
-                pointHoverRadius: 6,
-                borderWidth: 2.5,
+                backgroundColor: 'rgba(66, 173, 0, 0.85)',
+                hoverBackgroundColor: '#42AD00',
+                borderRadius: 6,
+                borderSkipped: false,
+                barPercentage: 0.7,
+                categoryPercentage: 0.6,
             },
             {
                 label: 'Expenses',
                 data: expenseData,
-                borderColor: '#E74C3C',
-                backgroundColor: 'rgba(231, 76, 60, 0.08)',
-                tension: 0.4,
-                fill: true,
-                pointBackgroundColor: '#E74C3C',
-                pointBorderColor: theme.bgCard,
-                pointBorderWidth: 2,
-                pointRadius: 4,
-                pointHoverRadius: 6,
-                borderWidth: 2.5,
+                backgroundColor: 'rgba(231, 76, 60, 0.85)',
+                hoverBackgroundColor: '#E74C3C',
+                borderRadius: 6,
+                borderSkipped: false,
+                barPercentage: 0.7,
+                categoryPercentage: 0.6,
             }
         ]
     };
@@ -98,7 +103,7 @@ function Chart() {
                 padding: 12,
                 cornerRadius: 10,
                 callbacks: {
-                    label: function(context) {
+                    label: function (context) {
                         return ` ${context.dataset.label}: ₹${context.parsed.y.toLocaleString('en-IN')}`;
                     }
                 }
@@ -118,6 +123,7 @@ function Chart() {
                 }
             },
             y: {
+                beginAtZero: true,
                 grid: {
                     color: gridColor,
                     drawBorder: false,
@@ -128,21 +134,17 @@ function Chart() {
                         size: 11,
                     },
                     color: mutedColor,
-                    callback: function(value) {
+                    callback: function (value) {
                         return '₹' + value.toLocaleString('en-IN');
                     }
                 }
             }
-        },
-        interaction: {
-            intersect: false,
-            mode: 'index',
         }
     };
 
     return (
         <ChartStyled>
-            <Line data={data} options={options} />
+            <Bar data={data} options={options} />
         </ChartStyled>
     );
 }
