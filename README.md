@@ -218,5 +218,5 @@ This project is open source under the [ISC License](https://opensource.org/licen
 ---
 
 <p align="center">
-  Built with ❤️ by <strong>Dinesh</strong>
+  Built with ❤️ by <strong>Arvind</strong>
 </p>

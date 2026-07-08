@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { comment, trash,calender,dollar, money, freelance, stocks, users, bitcoin, card, yt, piggy, book, food, medical, tv, takeaway, clothing, circle } from '../../utils/icons'
+import { comment, trash,calender,rupees, money, freelance, stocks, users, bitcoin, card, yt, piggy, book, food, medical, tv, takeaway, clothing, circle } from '../../utils/icons'
 import Button from '../Button/Button'
 
 function IncomeItem({
@@ -72,7 +72,7 @@ function IncomeItem({
                 <h5>{title}</h5>
                 <div className="inner-content">
                     <div className="text">
-                        <p>{dollar} {amount}</p>
+                        <p>{rupees} {amount}</p>
                         <p>{calender} {date}</p>
                         <p>
                             {comment}

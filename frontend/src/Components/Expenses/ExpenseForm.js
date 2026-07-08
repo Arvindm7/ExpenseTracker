@@ -70,7 +70,7 @@ function ExpenseForm() {
             </div>
             <div className="selects input-control">
                 <select required value={category} name="category" id="category" onChange={handleInput('category')}>
-                    <option value="" disabled >Select Option</option>
+                    <option value="" disabled >Select Category</option>
                     <option value="education">Education</option>
                     <option value="groceries">Groceries</option>
                     <option value="health">Health</option>
@@ -102,18 +102,23 @@ function ExpenseForm() {
 const ExpenseFormStyled = styled.form`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: ${({ theme }) => theme.bgCard};
+    border-radius: 20px;
+    border: 2px solid ${({ theme }) => theme.borderColor};
+    box-shadow: ${({ theme }) => theme.shadow};
+
     input, textarea, select{
         font-family: inherit;
         font-size: inherit;
         outline: none;
         border: none;
-        padding: .5rem 1rem;
-        border-radius: 5px;
+        padding: .8rem 1.2rem;
+        border-radius: 12px;
         border: 2px solid ${({ theme }) => theme.borderColor};
-        background: ${({ theme }) => theme.bgInput};
+        background: transparent;
         resize: none;
-        box-shadow: ${({ theme }) => theme.shadow};
         color: ${({ theme }) => theme.textPrimary};
         transition: all 0.3s ease;
         &::placeholder{
@@ -121,6 +126,7 @@ const ExpenseFormStyled = styled.form`
         }
         &:focus{
             border-color: var(--color-accent);
+            background: ${({ theme }) => theme.bgInput};
         }
     }
     .input-control{
@@ -131,8 +137,11 @@ const ExpenseFormStyled = styled.form`
 
     .selects{
         display: flex;
-        justify-content: flex-end;
+        position: relative;
         select{
+            width: 100%;
+            appearance: none;
+            cursor: pointer;
             color: ${({ theme }) => theme.textSecondary};
             &:focus, &:active{
                 color: ${({ theme }) => theme.textPrimary};
@@ -142,11 +151,23 @@ const ExpenseFormStyled = styled.form`
                 color: ${({ theme }) => theme.textPrimary};
             }
         }
+        &::after {
+            content: "▼";
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: ${({ theme }) => theme.textSecondary};
+            font-size: 0.8rem;
+        }
     }
 
     .submit-btn{
         button{
             box-shadow: ${({ theme }) => theme.shadow};
+            width: 100%;
+            justify-content: center;
             &:hover{
                 background: var(--color-green) !important;
             }
