@@ -4,9 +4,12 @@ import { InnerLayout } from '../../styles/Layouts';
 import { useGlobalContext } from '../../context/globalContext';
 import { dateFormat } from '../../utils/dateFormat';
 import { rupees } from '../../utils/icons';
+import { exportToCSV } from '../../utils/exportCSV';
+import { useToast } from '../Toast/Toast';
 
 function Transactions() {
     const { incomes, expenses, getIncomes, getExpenses, totalIncome, totalExpenses } = useGlobalContext();
+    const toast = useToast();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('all'); // 'all' | 'income' | 'expense'
@@ -59,10 +62,26 @@ function Transactions() {
         setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
     };
 
+    const handleExport = () => {
+        if (filteredTransactions.length === 0) {
+            toast.warning('No transactions to export');
+            return;
+        }
+        const filterLabel = filterType !== 'all' ? `_${filterType}` : '';
+        exportToCSV(filteredTransactions, `expense_tracker${filterLabel}`);
+        toast.success(`Exported ${filteredTransactions.length} transactions to CSV`);
+    };
+
     return (
         <TransactionsStyled>
             <InnerLayout>
-                <h1>Transaction History</h1>
+                <div className="page-header">
+                    <h1>Transaction History</h1>
+                    <button className="export-btn" onClick={handleExport}>
+                        <i className="fa-solid fa-file-export"></i>
+                        Export CSV
+                    </button>
+                </div>
 
                 {/* Summary Cards */}
                 <div className="summary-cards">
@@ -171,6 +190,44 @@ function Transactions() {
 const TransactionsStyled = styled.div`
     display: flex;
     overflow: auto;
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .export-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        background: linear-gradient(135deg, #6C63FF, #5DADE2);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(108, 99, 255, 0.3);
+
+        i {
+            font-size: 0.9rem;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(108, 99, 255, 0.4);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
 
     .summary-cards {
         display: grid;
