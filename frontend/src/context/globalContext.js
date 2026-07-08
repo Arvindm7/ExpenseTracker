@@ -28,8 +28,7 @@ export const GlobalProvider = ({ children }) => {
   // Function to get all incomes
   const getIncomes = async () => {
     const response = await axios.get(`${BASE_URL}get-incomes`);
-    setIncomes(response.data); 
-    console.log(response.data);
+    setIncomes(response.data);
   };
 
   // Function to delete an income by ID
@@ -60,8 +59,7 @@ export const GlobalProvider = ({ children }) => {
   // Function to get all expenses
   const getExpenses = async () => {
     const response = await axios.get(`${BASE_URL}get-expenses`);
-    setExpenses(response.data); // Update expenses state with fetched data
-    console.log(response.data);
+    setExpenses(response.data);
   };
 
   // Function to delete an expense by ID
