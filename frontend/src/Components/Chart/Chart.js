@@ -15,15 +15,27 @@ function Chart() {
     const mutedColor = theme.textMuted;
     const gridColor = theme.gridColor;
 
+    const allTransactions = [...incomes, ...expenses].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const uniqueDates = [...new Set(allTransactions.map(item => dateFormat(item.date)))];
+
+    const incomeData = uniqueDates.map(date => {
+        return incomes
+            .filter(item => dateFormat(item.date) === date)
+            .reduce((sum, item) => sum + item.amount, 0);
+    });
+
+    const expenseData = uniqueDates.map(date => {
+        return expenses
+            .filter(item => dateFormat(item.date) === date)
+            .reduce((sum, item) => sum + item.amount, 0);
+    });
+
     const data = {
-        labels: incomes.map((inc) => {
-            const { date } = inc;
-            return dateFormat(date);
-        }),
+        labels: uniqueDates,
         datasets: [
             {
                 label: 'Income',
-                data: incomes.map((income) => income.amount),
+                data: incomeData,
                 borderColor: '#42AD00',
                 backgroundColor: 'rgba(66, 173, 0, 0.08)',
                 tension: 0.4,
@@ -37,7 +49,7 @@ function Chart() {
             },
             {
                 label: 'Expenses',
-                data: expenses.map((expense) => expense.amount),
+                data: expenseData,
                 borderColor: '#E74C3C',
                 backgroundColor: 'rgba(231, 76, 60, 0.08)',
                 tension: 0.4,
