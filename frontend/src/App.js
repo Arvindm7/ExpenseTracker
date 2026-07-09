@@ -8,13 +8,15 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import Income from "./Components/Income/Income";
 import Expenses from "./Components/Expenses/Expenses";
 import Transactions from "./Components/Transactions/Transactions";
+import Landing from "./Components/Landing/Landing";
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
 import { useAuth } from "./context/authContext";
 
 function App() {
   const [active, setActive] = useState(1);
-  const [authView, setAuthView] = useState('login'); // 'login' or 'register'
+  // 'landing', 'login', 'register'
+  const [authView, setAuthView] = useState('landing');
   const { isAuthenticated, loading } = useAuth();
 
   const displayData = () => {
@@ -40,7 +42,6 @@ function App() {
   if (loading) {
     return (
       <LoadingScreen bg={bg}>
-        {orbMemo}
         <div className="loader-container">
           <div className="loader"></div>
           <p>Loading...</p>
@@ -49,15 +50,31 @@ function App() {
     );
   }
 
-  // Show auth pages if not logged in
+  // Show landing / auth pages if not logged in
   if (!isAuthenticated) {
+    // Landing page
+    if (authView === 'landing') {
+      return (
+        <Landing
+          onGetStarted={() => setAuthView('register')}
+          onLogin={() => setAuthView('login')}
+        />
+      );
+    }
+
+    // Login / Register pages (no orb, no scrollbar issues)
     return (
       <AuthWrapper bg={bg}>
-        {orbMemo}
         {authView === 'login' ? (
-          <Login onSwitchToRegister={() => setAuthView('register')} />
+          <Login
+            onSwitchToRegister={() => setAuthView('register')}
+            onSwitchToLanding={() => setAuthView('landing')}
+          />
         ) : (
-          <Register onSwitchToLogin={() => setAuthView('login')} />
+          <Register
+            onSwitchToLogin={() => setAuthView('login')}
+            onSwitchToLanding={() => setAuthView('landing')}
+          />
         )}
       </AuthWrapper>
     );
@@ -87,6 +104,7 @@ const LoadingScreen = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 
   .loader-container {
     display: flex;
@@ -116,11 +134,12 @@ const AuthWrapper = styled.div`
   height: 100vh;
   background-image: url(${props => props.bg});
   position: relative;
-  overflow: auto;
+  overflow: hidden;
 `;
 
 const AppStyled = styled.div`
   height: 100vh;
+  overflow: hidden;
   background-image: url(${props => props.bg});
   position: relative;
 

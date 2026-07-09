@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { useAuth } from '../../context/authContext';
 import { useToast } from '../Toast/Toast';
 
-function Login({ onSwitchToRegister }) {
+function Login({ onSwitchToRegister, onSwitchToLanding }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +33,9 @@ function Login({ onSwitchToRegister }) {
     return (
         <AuthPageStyled>
             <div className="auth-card">
+                <button className="back-btn" onClick={onSwitchToLanding}>
+                    <i className="fa-solid fa-arrow-left"></i> Back to Home
+                </button>
                 <div className="auth-header">
                     <div className="logo-icon">
                         <i className="fa-solid fa-wallet"></i>
@@ -394,6 +397,27 @@ const AuthPageStyled = styled.div`
                 color: #5DADE2;
             }
         }
+    }
+
+    .back-btn {
+        background: none;
+        border: none;
+        color: ${({ theme }) => theme.textMuted};
+        font-family: inherit;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-bottom: 0.5rem;
+        transition: color 0.2s;
+
+        &:hover {
+            color: #6C63FF;
+        }
+
+        i { font-size: 0.8rem; }
     }
 
     @media (max-width: 500px) {

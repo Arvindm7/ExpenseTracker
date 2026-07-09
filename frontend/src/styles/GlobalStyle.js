@@ -21,7 +21,6 @@ export const GlobalStyle = createGlobalStyle`
 body{
     font-family: 'Nunito', sans-serif;
     font-size: clamp(1rem, 1.5vw, 1.2rem);
-    overflow: hidden;
     color: ${({ theme }) => theme.textSecondary};
     background: ${({ theme }) => theme.bg};
     transition: background 0.3s ease, color 0.3s ease;
