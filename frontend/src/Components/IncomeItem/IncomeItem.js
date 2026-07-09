@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { comment, trash, calender, rupees, money, freelance, stocks, users, bitcoin, card, yt, piggy, book, food, medical, tv, takeaway, clothing, circle } from '../../utils/icons'
+import { comment, trash, calender, money, freelance, stocks, users, bitcoin, card, yt, piggy, book, food, medical, tv, takeaway, clothing, circle } from '../../utils/icons'
 import Button from '../Button/Button'
 
 function IncomeItem({
