@@ -87,16 +87,31 @@ function Transactions() {
                 {/* Summary Cards */}
                 <div className="summary-cards">
                     <div className="summary-card income-card">
-                        <span className="label">Total Income</span>
-                        <span className="value income-value">{rupees} {totalIncome().toLocaleString('en-IN')}</span>
+                        <div className="summary-icon income-icon">
+                            <i className="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+                        <div className="summary-text">
+                            <span className="label">Total Income</span>
+                            <span className="value income-value">{rupees} {totalIncome().toLocaleString('en-IN')}</span>
+                        </div>
                     </div>
                     <div className="summary-card expense-card">
-                        <span className="label">Total Expenses</span>
-                        <span className="value expense-value">{rupees} {totalExpenses().toLocaleString('en-IN')}</span>
+                        <div className="summary-icon expense-icon">
+                            <i className="fa-solid fa-arrow-trend-down"></i>
+                        </div>
+                        <div className="summary-text">
+                            <span className="label">Total Expenses</span>
+                            <span className="value expense-value">{rupees} {totalExpenses().toLocaleString('en-IN')}</span>
+                        </div>
                     </div>
                     <div className="summary-card count-card">
-                        <span className="label">Transactions</span>
-                        <span className="value">{filteredTransactions.length}</span>
+                        <div className="summary-icon count-icon">
+                            <i className="fa-solid fa-list-check"></i>
+                        </div>
+                        <div className="summary-text">
+                            <span className="label">Transactions</span>
+                            <span className="value">{filteredTransactions.length}</span>
+                        </div>
                     </div>
                 </div>
 
@@ -244,29 +259,55 @@ const TransactionsStyled = styled.div`
         border-radius: 16px;
         padding: 1rem 1.2rem;
         display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-        transition: transform 0.2s ease;
+        align-items: center;
+        gap: 0.8rem;
+        transition: all 0.3s ease;
 
         &:hover {
             transform: translateY(-2px);
+            box-shadow: ${({ theme }) => theme.shadowHover};
+        }
+    }
+
+    .summary-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        i {
+            font-size: 1.1rem;
+            color: #fff;
         }
 
+        &.income-icon { background: linear-gradient(135deg, #42AD00, #2ED8A3); }
+        &.expense-icon { background: linear-gradient(135deg, #E74C3C, #F56692); }
+        &.count-icon { background: linear-gradient(135deg, #6C63FF, #5DADE2); }
+    }
+
+    .summary-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+
         .label {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: ${({ theme }) => theme.textMuted};
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .value {
-            font-size: 1.6rem;
-            font-weight: 700;
+            font-size: 1.4rem;
+            font-weight: 800;
             color: var(--primary-color);
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.2rem;
         }
 
         .income-value {

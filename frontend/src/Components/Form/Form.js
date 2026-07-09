@@ -168,11 +168,17 @@ const FormStyled=styled.form`
 
     .submit-btn{
         button{
-            box-shadow: ${({ theme }) => theme.shadow};
             width: 100%;
             justify-content: center;
+            background: linear-gradient(135deg, #6C63FF, #5DADE2) !important;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.25);
+            border-radius: 14px !important;
+            padding: 0.85rem 1.6rem !important;
+            font-weight: 700;
+            transition: all 0.3s ease;
             &:hover{
-                background: var(--color-green) !important;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 25px rgba(108, 99, 255, 0.4) !important;
             }
         }
     }
