@@ -5,6 +5,7 @@ import { GlobalStyle } from './styles/GlobalStyle';
 import { GlobalProvider } from './context/globalContext';
 import { ToastProvider } from './Components/Toast/Toast';
 import { ThemeContextProvider } from './context/themeContext';
+import { AuthProvider } from './context/authContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,9 +13,11 @@ root.render(
     <ThemeContextProvider>
       <GlobalStyle />
       <ToastProvider>
-        <GlobalProvider>
-          <App />
-        </GlobalProvider>
+        <AuthProvider>
+          <GlobalProvider>
+            <App />
+          </GlobalProvider>
+        </AuthProvider>
       </ToastProvider>
     </ThemeContextProvider>
   </React.StrictMode>

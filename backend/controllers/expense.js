@@ -13,6 +13,7 @@ exports.addExpense = async (req, res) => {
         }
 
         const expense = await ExpenseSchema.create({
+            user: req.user._id,
             title,
             amount,
             category,
@@ -28,7 +29,7 @@ exports.addExpense = async (req, res) => {
 
 exports.getExpense = async (req, res) => {
     try {
-        const expenses = await ExpenseSchema.find().sort({ createdAt: -1 });
+        const expenses = await ExpenseSchema.find({ user: req.user._id }).sort({ createdAt: -1 });
         res.status(200).json(expenses);
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });
@@ -38,7 +39,7 @@ exports.getExpense = async (req, res) => {
 exports.deleteExpense = async (req, res) => {
     const { id } = req.params;
     try {
-        const expense = await ExpenseSchema.findByIdAndDelete(id);
+        const expense = await ExpenseSchema.findOneAndDelete({ _id: id, user: req.user._id });
         if (!expense) {
             return res.status(404).json({ message: 'Expense not found' });
         }

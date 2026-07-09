@@ -4,10 +4,19 @@ import avatar from '../../img/avatar.png';
 import { menuItems } from '../../utils/menuItems';
 import { signout } from '../../utils/icons';
 import { useThemeToggle } from '../../context/themeContext';
+import { useAuth } from '../../context/authContext';
+import { useGlobalContext } from '../../context/globalContext';
 
 function Navigation({ active, setActive }) {
     const [mobileOpen, setMobileOpen] = useState(false);
     const { isDark, toggle } = useThemeToggle();
+    const { user, logout } = useAuth();
+    const { clearData } = useGlobalContext();
+
+    const handleSignOut = () => {
+        clearData();
+        logout();
+    };
 
     return (
         <>
@@ -23,7 +32,8 @@ function Navigation({ active, setActive }) {
                 <div className="user-container">
                     <img src={avatar} alt="user avatar" />
                     <div className="text">
-                        <h2>Track your Spending</h2>
+                        <h2>{user?.name || 'User'}</h2>
+                        <p className="user-email">{user?.email || ''}</p>
                     </div>
                 </div>
 
@@ -51,7 +61,7 @@ function Navigation({ active, setActive }) {
                         <i className={`fa-solid fa-${isDark ? 'sun' : 'moon'}`}></i>
                         <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>
                     </li>
-                    <li>
+                    <li onClick={handleSignOut}>
                         {signout} <span>Sign Out</span>
                     </li>
                 </div>
@@ -140,6 +150,15 @@ const NavStyled = styled.nav`
 
     p {
         color: ${({ theme }) => theme.textSecondary};
+    }
+
+    .user-email {
+        font-size: 0.75rem;
+        color: ${({ theme }) => theme.textMuted};
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 160px;
     }
 
     .menu-items {

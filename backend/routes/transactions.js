@@ -1,13 +1,16 @@
-const router=require('express').Router()
-const {addIncome,getIncomes,deleteIncome}=require('../controllers/income.js')
-const {addExpense,getExpense,deleteExpense}=require('../controllers/expense.js')
+const router = require('express').Router();
+const { addIncome, getIncomes, deleteIncome } = require('../controllers/income.js');
+const { addExpense, getExpense, deleteExpense } = require('../controllers/expense.js');
+const { protect } = require('../middleware/authMiddleware');
 
-router.post('/add-income',addIncome)
+// All transaction routes require authentication
+router.use(protect);
+
+router.post('/add-income', addIncome)
     .get('/get-incomes', getIncomes)
     .delete('/delete-income/:id', deleteIncome)
     .post('/add-expense', addExpense)
     .get('/get-expenses', getExpense)
-    .delete('/delete-expense/:id', deleteExpense)
+    .delete('/delete-expense/:id', deleteExpense);
 
-
-module.exports=router
+module.exports = router;

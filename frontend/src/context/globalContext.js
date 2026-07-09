@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import axios from "axios";
 import { useToast } from "../Components/Toast/Toast";
 
 // Base URL for the API
-const BASE_URL = "https://expensetracker-qc7c.onrender.com/api/v1/";
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api/v1/";
 
 // Create a context for global state management
 const globalContext = React.createContext();
@@ -18,11 +18,20 @@ export const GlobalProvider = ({ children }) => {
 
   const toast = useToast();
 
+  // Helper: get auth headers from localStorage
+  // (axios defaults are also set by authContext, but this is a safety net)
+  const getAuthConfig = useCallback(() => {
+    const token = localStorage.getItem('expense-tracker-token');
+    return token
+      ? { headers: { Authorization: `Bearer ${token}` } }
+      : {};
+  }, []);
+
   // Function to add a new income
   const addIncome = async (income) => {
     try {
       setLoading(true);
-      await axios.post(`${BASE_URL}add-income`, income);
+      await axios.post(`${BASE_URL}add-income`, income, getAuthConfig());
       await getIncomes();
       toast.success("Income added successfully!");
     } catch (err) {
@@ -38,7 +47,7 @@ export const GlobalProvider = ({ children }) => {
   const getIncomes = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${BASE_URL}get-incomes`);
+      const response = await axios.get(`${BASE_URL}get-incomes`, getAuthConfig());
       setIncomes(response.data);
     } catch (err) {
       toast.error("Failed to fetch incomes");
@@ -51,7 +60,7 @@ export const GlobalProvider = ({ children }) => {
   const deleteIncome = async (id) => {
     try {
       setLoading(true);
-      await axios.delete(`${BASE_URL}delete-income/${id}`);
+      await axios.delete(`${BASE_URL}delete-income/${id}`, getAuthConfig());
       await getIncomes();
       toast.success("Income deleted");
     } catch (err) {
@@ -74,7 +83,7 @@ export const GlobalProvider = ({ children }) => {
   const addExpense = async (expense) => {
     try {
       setLoading(true);
-      await axios.post(`${BASE_URL}add-expense`, expense);
+      await axios.post(`${BASE_URL}add-expense`, expense, getAuthConfig());
       await getExpenses();
       toast.success("Expense added successfully!");
     } catch (err) {
@@ -90,7 +99,7 @@ export const GlobalProvider = ({ children }) => {
   const getExpenses = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${BASE_URL}get-expenses`);
+      const response = await axios.get(`${BASE_URL}get-expenses`, getAuthConfig());
       setExpenses(response.data);
     } catch (err) {
       toast.error("Failed to fetch expenses");
@@ -103,7 +112,7 @@ export const GlobalProvider = ({ children }) => {
   const deleteExpense = async (id) => {
     try {
       setLoading(true);
-      await axios.delete(`${BASE_URL}delete-expense/${id}`);
+      await axios.delete(`${BASE_URL}delete-expense/${id}`, getAuthConfig());
       await getExpenses();
       toast.success("Expense deleted");
     } catch (err) {
@@ -136,6 +145,13 @@ export const GlobalProvider = ({ children }) => {
     return totalIncome() - totalExpenses();
   };
 
+  // Function to clear all data on logout
+  const clearData = () => {
+    setIncomes([]);
+    setExpenses([]);
+    setError(null);
+  };
+
   return (
     <globalContext.Provider
       value={{
@@ -154,6 +170,7 @@ export const GlobalProvider = ({ children }) => {
         error,
         setError,
         loading,
+        clearData,
       }}
     >
       {children}
