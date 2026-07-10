@@ -291,7 +291,13 @@ const IncomeStyled=styled.div`
 
     @media (max-width: 900px) {
         .page-header {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
             h1 { font-size: 1.4rem; }
+        }
+        .header-left {
+            align-items: center;
         }
         .badge-value {
             font-size: 1.1rem;

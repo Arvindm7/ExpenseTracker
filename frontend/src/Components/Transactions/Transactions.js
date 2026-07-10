@@ -584,6 +584,16 @@ const TransactionsStyled = styled.div`
     }
 
     @media (max-width: 900px) {
+        .page-header {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            h1 {
+                font-size: 1.4rem;
+            }
+        }
+
         .summary-cards {
             grid-template-columns: 1fr;
         }

@@ -21,6 +21,6 @@ export const InnerLayout = styled.div`
     flex-direction: column;
 
     @media (max-width: 900px) {
-        padding: 1.2rem 1rem;
+        padding: 3.5rem 1rem 1.2rem;
     }
 `;

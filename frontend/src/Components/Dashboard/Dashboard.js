@@ -331,6 +331,10 @@ const DashboardStyled = styled.div`
     }
 
     @media (max-width: 900px) {
+        h1 {
+            text-align: center;
+        }
+
         .stat-cards {
             grid-template-columns: 1fr;
             gap: 0.8rem;
