@@ -113,9 +113,10 @@ const MobileOverlay = styled.div`
 const NavStyled = styled.nav`
     padding: 2rem 1.5rem;
     width: 280px;
+    min-width: 0;
     height: 100%;
     background: ${({ theme }) => theme.bgNav};
-    border: 3px solid ${({ theme }) => theme.borderColor};
+    border: 2px solid ${({ theme }) => theme.borderColor};
     backdrop-filter: blur(4.5px);
     border-radius: 32px;
     display: flex;

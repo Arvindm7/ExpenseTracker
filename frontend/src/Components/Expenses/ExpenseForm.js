@@ -102,19 +102,20 @@ function ExpenseForm() {
 const ExpenseFormStyled = styled.form`
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    padding: 2rem;
+    gap: 1.2rem;
+    padding: 1.5rem;
     background: ${({ theme }) => theme.bgCard};
     border-radius: 20px;
     border: 2px solid ${({ theme }) => theme.borderColor};
     box-shadow: ${({ theme }) => theme.shadow};
+    transition: all 0.3s ease;
 
     input, textarea, select{
         font-family: inherit;
-        font-size: inherit;
+        font-size: 0.9rem;
         outline: none;
         border: none;
-        padding: .8rem 1.2rem;
+        padding: .7rem 1rem;
         border-radius: 12px;
         border: 2px solid ${({ theme }) => theme.borderColor};
         background: transparent;
@@ -154,13 +155,17 @@ const ExpenseFormStyled = styled.form`
         &::after {
             content: "▼";
             position: absolute;
-            right: 1.2rem;
+            right: 1rem;
             top: 50%;
             transform: translateY(-50%);
             pointer-events: none;
             color: ${({ theme }) => theme.textSecondary};
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
+    }
+
+    .react-datepicker-wrapper {
+        width: 100%;
     }
 
     .submit-btn{
@@ -170,8 +175,9 @@ const ExpenseFormStyled = styled.form`
             background: linear-gradient(135deg, #6C63FF, #5DADE2) !important;
             box-shadow: 0 4px 15px rgba(108, 99, 255, 0.25);
             border-radius: 14px !important;
-            padding: 0.85rem 1.6rem !important;
+            padding: 0.8rem 1.6rem !important;
             font-weight: 700;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
             &:hover{
                 transform: translateY(-2px);

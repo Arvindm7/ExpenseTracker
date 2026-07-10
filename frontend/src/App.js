@@ -100,6 +100,9 @@ const spin = keyframes`
 const LoadingScreen = styled.div`
   height: 100vh;
   background-image: url(${props => props.bg});
+  background-size: cover;
+  background-position: center;
+  background-color: ${({ theme }) => theme.bg};
   position: relative;
   display: flex;
   align-items: center;
@@ -133,6 +136,9 @@ const LoadingScreen = styled.div`
 const AuthWrapper = styled.div`
   height: 100vh;
   background-image: url(${props => props.bg});
+  background-size: cover;
+  background-position: center;
+  background-color: ${({ theme }) => theme.bg};
   position: relative;
   overflow: hidden;
 `;
@@ -141,20 +147,37 @@ const AppStyled = styled.div`
   height: 100vh;
   overflow: hidden;
   background-image: url(${props => props.bg});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: ${({ theme }) => theme.bg};
   position: relative;
 
   main {
     flex: 1;
+    min-width: 0;
     background: ${({ theme }) => theme.bgMain};
-    border: 3px solid ${({ theme }) => theme.borderColor};
+    border: 2px solid ${({ theme }) => theme.borderColor};
     backdrop-filter: blur(4.5px);
     border-radius: 32px;
-    overflow: auto;
+    overflow-y: auto;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
     transition: background 0.3s ease, border-color 0.3s ease;
 
     &::-webkit-scrollbar {
-      width: 0;
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${({ theme }) => theme.borderActive};
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: ${({ theme }) => theme.textMuted};
     }
   }
 

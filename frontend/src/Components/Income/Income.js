@@ -19,7 +19,10 @@ function Income(){
         <IncomeStyled>
             <InnerLayout>
                 <div className="page-header">
-                    <h1>Incomes</h1>
+                    <div className="header-left">
+                        <h1>Incomes</h1>
+                        <p className="page-subtitle">Track and manage your income sources</p>
+                    </div>
                     <div className="total-badge income-badge">
                         <div className="badge-icon">
                             <i className="fa-solid fa-arrow-trend-up"></i>
@@ -32,31 +35,48 @@ function Income(){
                 </div>
                 <div className="income-content">
                     <div className="form-container">
+                        <div className="section-header">
+                            <div className="section-icon">
+                                <i className="fa-solid fa-plus"></i>
+                            </div>
+                            <h3>Add New Income</h3>
+                        </div>
                         <Form />
                     </div>
-                    <div className="incomes">
-                        {incomes.length === 0 && (
-                            <div className="empty-state">
-                                <i className="fa-solid fa-coins"></i>
-                                <h3>No income entries yet</h3>
-                                <p>Add your first income using the form</p>
+                    <div className="list-container">
+                        <div className="section-header">
+                            <div className="section-icon list-icon">
+                                <i className="fa-solid fa-list"></i>
                             </div>
-                        )}
-                        {incomes.map((income)=>{
-                            const {_id, title, amount , date, category, description,type} = income;
-                            return <IncomeItem
-                                key={_id}
-                                id={_id}
-                                title={title}
-                                description={description}
-                                amount={amount}
-                                date={dateFormat(date)}
-                                type={type}
-                                category={category}
-                                indicatorColor="var(--color-green)"
-                                deleteItem={deleteIncome}
-                            />
-                        })}
+                            <h3>Recent Incomes</h3>
+                            <span className="item-count">{incomes.length} entries</span>
+                        </div>
+                        <div className="incomes">
+                            {incomes.length === 0 && (
+                                <div className="empty-state">
+                                    <div className="empty-icon-wrapper">
+                                        <i className="fa-solid fa-coins"></i>
+                                    </div>
+                                    <h3>No income entries yet</h3>
+                                    <p>Add your first income using the form</p>
+                                </div>
+                            )}
+                            {incomes.map((income)=>{
+                                const {_id, title, amount , date, category, description,type} = income;
+                                return <IncomeItem
+                                    key={_id}
+                                    id={_id}
+                                    title={title}
+                                    description={description}
+                                    amount={amount}
+                                    date={dateFormat(date)}
+                                    type={type}
+                                    category={category}
+                                    indicatorColor="var(--color-green)"
+                                    deleteItem={deleteIncome}
+                                />
+                            })}
+                        </div>
                     </div>
                 </div>
             </InnerLayout>
@@ -66,7 +86,7 @@ function Income(){
 
 const IncomeStyled=styled.div`
     display: flex;
-    overflow: auto;
+    flex: 1;
 
     .page-header {
         display: flex;
@@ -74,11 +94,24 @@ const IncomeStyled=styled.div`
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 1rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
 
         h1 {
             font-size: 1.8rem;
+            font-weight: 800;
         }
+    }
+
+    .page-subtitle {
+        font-size: 0.85rem;
+        color: ${({ theme }) => theme.textMuted};
+        font-weight: 500;
     }
 
     .total-badge {
@@ -137,11 +170,78 @@ const IncomeStyled=styled.div`
     }
 
     .income-content {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 1.5rem;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .form-container {
         display: flex;
-        gap: 2rem;
-        .incomes {
-            flex: 1;
+        flex-direction: column;
+        gap: 0;
+        align-self: flex-start;
+        position: sticky;
+        top: 0;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: ${({ theme }) => theme.textPrimary};
         }
+    }
+
+    .section-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #42AD00, #2ED8A3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        i {
+            font-size: 0.8rem;
+            color: #fff;
+        }
+    }
+
+    .list-icon {
+        background: linear-gradient(135deg, #6C63FF, #5DADE2);
+    }
+
+    .item-count {
+        margin-left: auto;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: ${({ theme }) => theme.textMuted};
+        background: ${({ theme }) => theme.navActiveBg};
+        padding: 0.2rem 0.7rem;
+        border-radius: 20px;
+        letter-spacing: 0.3px;
+    }
+
+    .list-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .incomes {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        flex: 1;
+        min-height: 0;
     }
 
     .empty-state {
@@ -149,17 +249,27 @@ const IncomeStyled=styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 3rem 1rem;
+        padding: 3rem 1.5rem;
         text-align: center;
         color: ${({ theme }) => theme.textMuted};
         background: ${({ theme }) => theme.bgCard};
         border: 2px dashed ${({ theme }) => theme.borderColor};
         border-radius: 20px;
 
+        .empty-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: ${({ theme }) => theme.navActiveBg};
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+
         i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            opacity: 0.4;
+            font-size: 1.8rem;
+            opacity: 0.5;
         }
 
         h3 {
@@ -173,6 +283,12 @@ const IncomeStyled=styled.div`
         }
     }
 
+    @media (max-width: 1100px) {
+        .income-content {
+            grid-template-columns: 340px 1fr;
+        }
+    }
+
     @media (max-width: 900px) {
         .page-header {
             h1 { font-size: 1.4rem; }
@@ -181,7 +297,10 @@ const IncomeStyled=styled.div`
             font-size: 1.1rem;
         }
         .income-content {
-            flex-direction: column;
+            grid-template-columns: 1fr;
+        }
+        .form-container {
+            position: static;
         }
     }
 `;
