@@ -28,3 +28,9 @@ export const medical = <i className="fa-solid fa-briefcase-medical"></i>
 export const tv = <i className="fa-solid fa-tv"></i>
 export const circle = <i className="fa-solid fa-circle-dot"></i>
 export const rupees = <i className="fa-solid fa-indian-rupee-sign"></i>
+export const investment = <i className="fa-solid fa-chart-pie"></i>
+export const shopping = <i className="fa-solid fa-bag-shopping"></i>
+export const entertainment = <i className="fa-solid fa-film"></i>
+export const fuel = <i className="fa-solid fa-gas-pump"></i>
+export const rent = <i className="fa-solid fa-house"></i>
+export const insurance = <i className="fa-solid fa-shield-halved"></i>

@@ -1,19 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { InnerLayout } from "../../styles/Layouts";
 import { useGlobalContext } from "../../context/globalContext";
 import Form from "../Form/Form";
 import IncomeItem from "../IncomeItem/IncomeItem";
+import EditModal from "../EditModal/EditModal";
 import { dateFormat } from "../../utils/dateFormat";
 
 function Income(){
 
-    const {incomes,getIncomes,deleteIncome,totalIncome}=useGlobalContext();
+    const {incomes,getIncomes,deleteIncome,updateIncome,totalIncome}=useGlobalContext();
+    const [editingItem, setEditingItem] = useState(null);
 
     useEffect(()=>{
         getIncomes();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
+
+    const handleSaveEdit = async (id, data) => {
+        await updateIncome(id, data);
+        setEditingItem(null);
+    };
 
     return (
         <IncomeStyled>
@@ -74,12 +81,22 @@ function Income(){
                                     category={category}
                                     indicatorColor="var(--color-green)"
                                     deleteItem={deleteIncome}
+                                    onEdit={setEditingItem}
                                 />
                             })}
                         </div>
                     </div>
                 </div>
             </InnerLayout>
+
+            {editingItem && (
+                <EditModal
+                    item={editingItem}
+                    type="income"
+                    onSave={handleSaveEdit}
+                    onClose={() => setEditingItem(null)}
+                />
+            )}
         </IncomeStyled>
     )
 }

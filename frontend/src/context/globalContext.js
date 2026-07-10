@@ -152,6 +152,38 @@ export const GlobalProvider = ({ children }) => {
     setError(null);
   };
 
+  // Function to update an income
+  const updateIncome = async (id, incomeData) => {
+    try {
+      setLoading(true);
+      await axios.put(`${BASE_URL}update-income/${id}`, incomeData, getAuthConfig());
+      await getIncomes();
+      toast.success("Income updated successfully!");
+    } catch (err) {
+      const message = err.response?.data?.message || "Failed to update income";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function to update an expense
+  const updateExpense = async (id, expenseData) => {
+    try {
+      setLoading(true);
+      await axios.put(`${BASE_URL}update-expense/${id}`, expenseData, getAuthConfig());
+      await getExpenses();
+      toast.success("Expense updated successfully!");
+    } catch (err) {
+      const message = err.response?.data?.message || "Failed to update expense";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <globalContext.Provider
       value={{
@@ -159,10 +191,12 @@ export const GlobalProvider = ({ children }) => {
         getIncomes,
         incomes,
         deleteIncome,
+        updateIncome,
         totalIncome,
         addExpense,
         getExpenses,
         deleteExpense,
+        updateExpense,
         totalExpenses,
         expenses,
         totalBalance,

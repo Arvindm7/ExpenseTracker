@@ -1,18 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useGlobalContext } from '../../context/globalContext';
 import { InnerLayout } from '../../styles/Layouts';
 import IncomeItem from '../IncomeItem/IncomeItem';
 import ExpenseForm from './ExpenseForm';
+import EditModal from '../EditModal/EditModal';
 import { dateFormat } from '../../utils/dateFormat';
 
 function Expenses() {
-    const {expenses, getExpenses, deleteExpense, totalExpenses} = useGlobalContext()
+    const {expenses, getExpenses, deleteExpense, updateExpense, totalExpenses} = useGlobalContext()
+    const [editingItem, setEditingItem] = useState(null);
 
     useEffect(() =>{
         getExpenses()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const handleSaveEdit = async (id, data) => {
+        await updateExpense(id, data);
+        setEditingItem(null);
+    };
+
     return (
         <ExpenseStyled>
             <InnerLayout>
@@ -72,12 +80,22 @@ function Expenses() {
                                     category={category} 
                                     indicatorColor="#E74C3C"
                                     deleteItem={deleteExpense}
+                                    onEdit={setEditingItem}
                                 />
                             })}
                         </div>
                     </div>
                 </div>
             </InnerLayout>
+
+            {editingItem && (
+                <EditModal
+                    item={editingItem}
+                    type="expense"
+                    onSave={handleSaveEdit}
+                    onClose={() => setEditingItem(null)}
+                />
+            )}
         </ExpenseStyled>
     )
 }

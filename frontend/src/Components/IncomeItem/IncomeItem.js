@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { comment, trash, calender, money, freelance, stocks, users, bitcoin, card, yt, piggy, book, food, medical, tv, takeaway, clothing, circle } from '../../utils/icons'
+import { comment, trash, calender, money, freelance, stocks, users, bitcoin, card, yt, piggy, book, food, medical, tv, takeaway, clothing, circle, investment, shopping, entertainment, fuel, rent, insurance } from '../../utils/icons'
 import Button from '../Button/Button'
 
 function IncomeItem({
@@ -11,6 +11,7 @@ function IncomeItem({
     category,
     description,
     deleteItem,
+    onEdit,
     indicatorColor,
     type
 }) {
@@ -54,6 +55,18 @@ function IncomeItem({
                 return clothing;
             case 'travelling':
                 return freelance;
+            case 'investment':
+                return investment;
+            case 'shopping':
+                return shopping;
+            case 'entertainment':
+                return entertainment;
+            case 'fuel':
+                return fuel;
+            case 'rent':
+                return rent;
+            case 'insurance':
+                return insurance;
             case 'other':
                 return circle;
             default:
@@ -87,7 +100,12 @@ function IncomeItem({
                 )}
             </div>
         </div>
-        <div className="delete-btn">
+        <div className="action-btns">
+            {onEdit && (
+                <button className="edit-btn" onClick={() => onEdit({ _id: id, title, amount, date, category, description })} title="Edit">
+                    <i className="fa-solid fa-pen-to-square"></i>
+                </button>
+            )}
             <Button
                 icon={trash}
                 bPad={'0.7rem'}
@@ -213,8 +231,37 @@ const IncomeItemStyled = styled.div`
         letter-spacing: 0.3px;
     }
 
-    .delete-btn {
+    .action-btns {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
         flex-shrink: 0;
+
+        .edit-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            border: 1.5px solid ${({ theme }) => theme.borderColor};
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+
+            i {
+                color: ${({ theme }) => theme.textMuted};
+                font-size: 0.95rem;
+            }
+
+            &:hover {
+                border-color: #6C63FF;
+                background: rgba(108, 99, 255, 0.08);
+                i {
+                    color: #6C63FF;
+                }
+            }
+        }
 
         button {
             background: transparent !important;
@@ -244,7 +291,7 @@ const IncomeItemStyled = styled.div`
             width: 100%;
         }
 
-        .delete-btn {
+        .action-btns {
             align-self: flex-end;
         }
     }
