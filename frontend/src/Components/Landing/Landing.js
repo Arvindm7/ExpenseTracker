@@ -13,9 +13,13 @@ function Landing({ onGetStarted, onLogin }) {
                     </div>
                     <span className="brand-name">ExpenseTracker</span>
                 </div>
-                <button className="nav-login-btn" onClick={onLogin}>
-                    Sign In <i className="fa-solid fa-arrow-right-to-bracket"></i>
-                </button>
+                <div className="nav-links">
+                    <a href="#features" className="nav-link">Features</a>
+                    <a href="#cta" className="nav-link">Get Started</a>
+                    <button className="nav-login-btn" onClick={onLogin}>
+                        Sign In <i className="fa-solid fa-arrow-right-to-bracket"></i>
+                    </button>
+                </div>
             </nav>
 
             {/* Hero Section */}
@@ -116,7 +120,7 @@ function Landing({ onGetStarted, onLogin }) {
             </section>
 
             {/* Features Section */}
-            <section className="features">
+            <section className="features" id="features">
                 <h2>Everything you need to manage money</h2>
                 <div className="features-grid">
                     <div className="feature-card">
@@ -151,7 +155,7 @@ function Landing({ onGetStarted, onLogin }) {
             </section>
 
             {/* CTA Section */}
-            <section className="bottom-cta">
+            <section className="bottom-cta" id="cta">
                 <h2>Ready to take control?</h2>
                 <p>Join today and start tracking your finances in seconds.</p>
                 <button className="cta-primary" onClick={onGetStarted}>
@@ -162,13 +166,37 @@ function Landing({ onGetStarted, onLogin }) {
 
             {/* Footer */}
             <footer className="landing-footer">
-                <div className="footer-brand">
-                    <div className="brand-icon small">
-                        <i className="fa-solid fa-wallet"></i>
+                <div className="footer-top">
+                    <div className="footer-col footer-about">
+                        <div className="footer-brand">
+                            <div className="brand-icon small">
+                                <i className="fa-solid fa-wallet"></i>
+                            </div>
+                            <span>ExpenseTracker</span>
+                        </div>
+                        <p className="footer-tagline">Your personal finance companion. Track, analyze, and grow your wealth smarter.</p>
                     </div>
-                    <span>ExpenseTracker</span>
+                    <div className="footer-col">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="#features"><i className="fa-solid fa-sparkles"></i> Features</a></li>
+                            <li><a href="#cta"><i className="fa-solid fa-rocket"></i> Get Started</a></li>
+                            <li><span className="coming-soon-item"><i className="fa-solid fa-mobile-screen"></i> Mobile App <span className="coming-soon-badge">Soon</span></span></li>
+                        </ul>
+                    </div>
+                    <div className="footer-col">
+                        <h4>Built With</h4>
+                        <div className="tech-chips">
+                            <span className="tech-chip"><i className="fa-brands fa-react"></i> React</span>
+                            <span className="tech-chip"><i className="fa-brands fa-node-js"></i> Node.js</span>
+                            <span className="tech-chip"><i className="fa-solid fa-database"></i> MongoDB</span>
+                            <span className="tech-chip"><i className="fa-solid fa-chart-simple"></i> Chart.js</span>
+                        </div>
+                    </div>
                 </div>
-                <p>&copy; {new Date().getFullYear()} ExpenseTracker. Built with ❤️</p>
+                <div className="footer-bottom">
+                    <p>&copy; {new Date().getFullYear()} ExpenseTracker. Made with ❤️ in India</p>
+                </div>
             </footer>
         </LandingStyled>
     );
@@ -202,14 +230,23 @@ const LandingStyled = styled.div`
 
     /* ---------- Navigation ---------- */
     .landing-nav {
-        position: relative;
-        z-index: 10;
+        position: sticky;
+        top: 0;
+        z-index: 100;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1.2rem 3rem;
-        max-width: 1200px;
-        margin: 0 auto;
+        padding: 1rem 3rem;
+        max-width: 100%;
+        background: ${({ theme }) => theme.name === 'dark'
+            ? 'rgba(26, 26, 46, 0.85)'
+            : 'rgba(252, 246, 249, 0.8)'};
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid ${({ theme }) => theme.borderActive};
+        box-shadow: 0 1px 12px ${({ theme }) => theme.name === 'dark'
+            ? 'rgba(0, 0, 0, 0.25)'
+            : 'rgba(0, 0, 0, 0.04)'};
         animation: ${slideUp} 0.6s ease-out;
     }
 
@@ -217,6 +254,27 @@ const LandingStyled = styled.div`
         display: flex;
         align-items: center;
         gap: 0.7rem;
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .nav-link {
+        padding: 0.5rem 1rem;
+        color: ${({ theme }) => theme.textSecondary};
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: all 0.3s;
+
+        &:hover {
+            color: ${({ theme }) => theme.textPrimary};
+            background: ${({ theme }) => theme.navHoverBg};
+        }
     }
 
     .brand-icon {
@@ -244,20 +302,19 @@ const LandingStyled = styled.div`
     }
 
     .nav-login-btn {
-        padding: 0.6rem 1.4rem;
+        padding: 0.5rem 1.2rem;
         border: 2px solid ${({ theme }) => theme.borderColor};
         border-radius: 12px;
         background: ${({ theme }) => theme.bgCard};
         color: ${({ theme }) => theme.textPrimary};
         font-family: inherit;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-weight: 600;
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 0.5rem;
         transition: all 0.3s;
-        backdrop-filter: blur(10px);
 
         &:hover {
             border-color: #6C63FF;
@@ -636,23 +693,135 @@ const LandingStyled = styled.div`
     .landing-footer {
         position: relative;
         z-index: 1;
-        text-align: center;
-        padding: 2rem 3rem;
+        padding: 3rem 3rem 1.5rem;
         border-top: 1px solid ${({ theme }) => theme.borderActive};
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 
+    .footer-top {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-col {
+        h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: ${({ theme }) => theme.textPrimary};
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li a, li span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: ${({ theme }) => theme.textSecondary};
+            text-decoration: none;
+            transition: all 0.2s;
+            font-weight: 500;
+            cursor: pointer;
+
+            i {
+                font-size: 0.8rem;
+                width: 18px;
+                text-align: center;
+                color: #6C63FF;
+            }
+        }
+
+        li a:hover {
+            color: ${({ theme }) => theme.textPrimary};
+            transform: translateX(3px);
+        }
+    }
+
+    .footer-about {
         .footer-brand {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 0.5rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
 
             span {
                 font-weight: 700;
                 color: ${({ theme }) => theme.textPrimary};
-                font-size: 0.95rem;
+                font-size: 1rem;
             }
         }
+
+        .footer-tagline {
+            font-size: 0.85rem;
+            color: ${({ theme }) => theme.textMuted};
+            line-height: 1.6;
+            max-width: 280px;
+        }
+    }
+
+    .coming-soon-item {
+        cursor: default !important;
+    }
+
+    .coming-soon-badge {
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 0.1rem 0.45rem;
+        border-radius: 6px;
+        background: linear-gradient(135deg, #F2994A, #F56692);
+        color: #fff;
+        letter-spacing: 0.3px;
+        margin-left: 0.2rem;
+    }
+
+    .tech-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .tech-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.3rem 0.7rem;
+        border-radius: 8px;
+        background: ${({ theme }) => theme.navActiveBg};
+        border: 1px solid ${({ theme }) => theme.borderColor};
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: ${({ theme }) => theme.textSecondary};
+        transition: all 0.2s;
+
+        i {
+            font-size: 0.8rem;
+            color: #6C63FF;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            border-color: ${({ theme }) => theme.borderActive};
+            box-shadow: ${({ theme }) => theme.shadow};
+        }
+    }
+
+    .footer-bottom {
+        padding-top: 1.5rem;
+        border-top: 1px solid ${({ theme }) => theme.borderActive};
+        text-align: center;
 
         p {
             color: ${({ theme }) => theme.textMuted};
@@ -676,7 +845,11 @@ const LandingStyled = styled.div`
     }
 
     @media (max-width: 700px) {
-        .landing-nav { padding: 1rem 1.5rem; }
+        .landing-nav {
+            padding: 0.8rem 1.5rem;
+        }
+
+        .nav-link { display: none; }
 
         .hero { padding: 2rem 1.5rem 1.5rem; }
 
@@ -710,6 +883,15 @@ const LandingStyled = styled.div`
         }
 
         .floating-card { display: none; }
+
+        .footer-top {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .landing-footer {
+            padding: 2rem 1.5rem 1rem;
+        }
     }
 `;
 

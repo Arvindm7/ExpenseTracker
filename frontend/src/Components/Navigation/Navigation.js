@@ -30,10 +30,13 @@ function Navigation({ active, setActive }) {
 
             <NavStyled className={mobileOpen ? 'mobile-open' : ''}>
                 <div className="user-container">
-                    <img src={avatar} alt="user avatar" />
-                    <div className="text">
+                    <div className="avatar-wrapper">
+                        <img src={avatar} alt="user avatar" />
+                        <div className="status-dot"></div>
+                    </div>
+                    <div className="user-info">
                         <h2>{user?.name || 'User'}</h2>
-                        <p className="user-email">{user?.email || ''}</p>
+                        <p className="user-email" title={user?.email || ''}>{user?.email || ''}</p>
                     </div>
                 </div>
 
@@ -56,6 +59,7 @@ function Navigation({ active, setActive }) {
                 </ul>
 
                 <div className="bottom-nav">
+                    <div className="divider"></div>
                     {/* Theme toggle */}
                     <li className="theme-toggle" onClick={toggle}>
                         <i className={`fa-solid fa-${isDark ? 'sun' : 'moon'}`}></i>
@@ -111,7 +115,7 @@ const MobileOverlay = styled.div`
 `;
 
 const NavStyled = styled.nav`
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1.2rem;
     width: 280px;
     min-width: 0;
     height: 100%;
@@ -121,57 +125,94 @@ const NavStyled = styled.nav`
     border-radius: 32px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 2rem;
+    gap: 1rem;
     flex-shrink: 0;
     transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 
+    /* ---------- User Profile Card ---------- */
     .user-container {
-        height: 100px;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        text-align: center;
+        padding: 1.2rem 0.8rem;
+        background: ${({ theme }) => theme.navActiveBg};
+        border-radius: 20px;
+        border: 1.5px solid ${({ theme }) => theme.borderColor};
+        gap: 0.6rem;
+    }
+
+    .avatar-wrapper {
+        position: relative;
+        flex-shrink: 0;
     }
 
     img {
-        width: 70px;
-        height: 70px;
+        width: 52px;
+        height: 52px;
         border-radius: 50%;
         object-fit: cover;
         background: ${({ theme }) => theme.bgCard};
-        border: 2px solid ${({ theme }) => theme.borderColor};
-        padding: .2rem;
+        border: 2.5px solid ${({ theme }) => theme.borderColor};
+        padding: .15rem;
         box-shadow: ${({ theme }) => theme.shadow};
+    }
+
+    .status-dot {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #42AD00;
+        border: 2.5px solid ${({ theme }) => theme.bgNav};
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.15rem;
+        width: 100%;
+        min-width: 0;
     }
 
     h2 {
         color: ${({ theme }) => theme.textPrimary};
-        font-size: 1.1rem;
+        font-size: 1rem;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .user-email {
+        font-size: 0.72rem;
+        color: ${({ theme }) => theme.textMuted};
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+        font-weight: 500;
     }
 
     p {
         color: ${({ theme }) => theme.textSecondary};
     }
 
-    .user-email {
-        font-size: 0.75rem;
-        color: ${({ theme }) => theme.textMuted};
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        max-width: 160px;
-    }
-
+    /* ---------- Menu Items ---------- */
     .menu-items {
         flex: 1;
         display: flex;
         flex-direction: column;
+        gap: 0.2rem;
 
         li {
             display: grid;
             grid-template-columns: 40px auto;
             align-items: center;
-            margin: .4rem 0;
             font-weight: 500;
             cursor: pointer;
             transition: all .3s ease-in-out;
@@ -182,7 +223,7 @@ const NavStyled = styled.nav`
 
             i {
                 color: ${({ theme }) => theme.textSecondary};
-                font-size: 1.3rem;
+                font-size: 1.2rem;
                 transition: all .3s ease-in-out;
             }
 
@@ -220,7 +261,14 @@ const NavStyled = styled.nav`
         }
     }
 
+    /* ---------- Bottom Nav ---------- */
     .bottom-nav {
+        .divider {
+            height: 1px;
+            background: ${({ theme }) => theme.borderActive};
+            margin: 0 0.5rem 0.5rem;
+        }
+
         li {
             display: grid;
             grid-template-columns: 40px auto;
@@ -234,7 +282,7 @@ const NavStyled = styled.nav`
             list-style: none;
 
             i {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
 
             &:hover {
