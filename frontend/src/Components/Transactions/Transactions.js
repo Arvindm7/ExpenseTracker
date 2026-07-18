@@ -6,6 +6,7 @@ import { dateFormat } from '../../utils/dateFormat';
 import { rupees } from '../../utils/icons';
 import { exportToCSV } from '../../utils/exportCSV';
 import { useToast } from '../Toast/Toast';
+import DateFilter, { getDateRange, filterByDateRange } from '../DateFilter/DateFilter';
 
 function Transactions() {
     const { incomes, expenses, getIncomes, getExpenses, totalIncome, totalExpenses } = useGlobalContext();
@@ -15,6 +16,7 @@ function Transactions() {
     const [filterType, setFilterType] = useState('all'); // 'all' | 'income' | 'expense'
     const [sortBy, setSortBy] = useState('date'); // 'date' | 'amount' | 'title'
     const [sortOrder, setSortOrder] = useState('desc'); // 'asc' | 'desc'
+    const [datePreset, setDatePreset] = useState('all');
 
     useEffect(() => {
         getIncomes();
@@ -22,9 +24,14 @@ function Transactions() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const dateRange = useMemo(() => getDateRange(datePreset), [datePreset]);
+
     // Merge, filter, search, and sort all transactions
     const filteredTransactions = useMemo(() => {
         let all = [...incomes, ...expenses];
+
+        // Filter by date range
+        all = filterByDateRange(all, dateRange);
 
         // Filter by type
         if (filterType === 'income') {
@@ -57,7 +64,7 @@ function Transactions() {
         });
 
         return all;
-    }, [incomes, expenses, searchTerm, filterType, sortBy, sortOrder]);
+    }, [incomes, expenses, searchTerm, filterType, sortBy, sortOrder, dateRange]);
 
     const toggleSortOrder = () => {
         setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
@@ -82,6 +89,11 @@ function Transactions() {
                         <i className="fa-solid fa-file-export"></i>
                         Export CSV
                     </button>
+                </div>
+
+                {/* Date Filter */}
+                <div className="date-filter-bar">
+                    <DateFilter activePreset={datePreset} onPresetChange={setDatePreset} />
                 </div>
 
                 {/* Summary Cards */}
@@ -213,6 +225,10 @@ const TransactionsStyled = styled.div`
         align-items: center;
         flex-wrap: wrap;
         gap: 1rem;
+    }
+
+    .date-filter-bar {
+        margin: 0.8rem 0 0;
     }
 
     .export-btn {

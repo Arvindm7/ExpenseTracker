@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import { InnerLayout } from "../../styles/Layouts";
 import Chart from '../Chart/Chart';
@@ -6,9 +6,11 @@ import DoughnutChart from '../Chart/DoughnutChart';
 import { rupees } from "../../utils/icons";
 import { useGlobalContext } from "../../context/globalContext";
 import History from '../History/History';
+import DateFilter, { getDateRange, filterByDateRange } from '../DateFilter/DateFilter';
 
 function Dashboard() {
-    const { totalExpenses, incomes, expenses, totalIncome, totalBalance, getIncomes, getExpenses } = useGlobalContext();
+    const { incomes, expenses, getIncomes, getExpenses } = useGlobalContext();
+    const [datePreset, setDatePreset] = useState('month');
 
     useEffect(() => {
         getIncomes();
@@ -16,12 +18,25 @@ function Dashboard() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const balance = totalBalance();
+    const dateRange = useMemo(() => getDateRange(datePreset), [datePreset]);
+    const filteredIncomes = useMemo(() => filterByDateRange(incomes, dateRange), [incomes, dateRange]);
+    const filteredExpenses = useMemo(() => filterByDateRange(expenses, dateRange), [expenses, dateRange]);
+
+    const filteredTotalIncome = filteredIncomes.reduce((sum, i) => sum + i.amount, 0);
+    const filteredTotalExpense = filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
+    const filteredBalance = filteredTotalIncome - filteredTotalExpense;
+    const savingsRate = filteredTotalIncome > 0
+        ? Math.max(0, Math.min(100, Math.round((filteredBalance / filteredTotalIncome) * 100)))
+        : null;
+    const savingsColor = savingsRate >= 50 ? '#42AD00' : savingsRate >= 20 ? '#F2994A' : '#E74C3C';
 
     return (
         <DashboardStyled>
             <InnerLayout>
-                <h1>Dashboard</h1>
+                <div className="dashboard-header">
+                    <h1>Dashboard</h1>
+                    <DateFilter activePreset={datePreset} onPresetChange={setDatePreset} />
+                </div>
 
                 {/* Stat Cards Row */}
                 <div className="stat-cards">
@@ -32,7 +47,7 @@ function Dashboard() {
                         <div className="stat-info">
                             <span className="stat-label">Total Income</span>
                             <span className="stat-value income-value">
-                                {rupees}{totalIncome().toLocaleString('en-IN')}
+                                {rupees}{filteredTotalIncome.toLocaleString('en-IN')}
                             </span>
                         </div>
                     </div>
@@ -43,18 +58,46 @@ function Dashboard() {
                         <div className="stat-info">
                             <span className="stat-label">Total Expenses</span>
                             <span className="stat-value expense-value">
-                                {rupees}{totalExpenses().toLocaleString('en-IN')}
+                                {rupees}{filteredTotalExpense.toLocaleString('en-IN')}
                             </span>
                         </div>
                     </div>
                     <div className="stat-card">
-                        <div className={`stat-icon ${balance >= 0 ? 'balance-positive-icon' : 'balance-negative-icon'}`}>
-                            <i className={`fa-solid fa-${balance >= 0 ? 'wallet' : 'triangle-exclamation'}`}></i>
+                        <div className={`stat-icon ${filteredBalance >= 0 ? 'balance-positive-icon' : 'balance-negative-icon'}`}>
+                            <i className={`fa-solid fa-${filteredBalance >= 0 ? 'wallet' : 'triangle-exclamation'}`}></i>
                         </div>
                         <div className="stat-info">
                             <span className="stat-label">Total Balance</span>
-                            <span className={`stat-value ${balance >= 0 ? 'balance-positive' : 'balance-negative'}`}>
-                                {rupees}{Math.abs(balance).toLocaleString('en-IN')}
+                            <span className={`stat-value ${filteredBalance >= 0 ? 'balance-positive' : 'balance-negative'}`}>
+                                {rupees}{Math.abs(filteredBalance).toLocaleString('en-IN')}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="stat-card savings-card">
+                        <div className="savings-ring">
+                            <svg width="52" height="52" viewBox="0 0 52 52">
+                                <circle cx="26" cy="26" r="22" fill="none"
+                                    stroke="currentColor" strokeWidth="4" opacity="0.12" />
+                                <circle cx="26" cy="26" r="22" fill="none"
+                                    stroke={savingsRate !== null ? savingsColor : '#888'}
+                                    strokeWidth="4"
+                                    strokeLinecap="round"
+                                    strokeDasharray={`${2 * Math.PI * 22}`}
+                                    strokeDashoffset={`${2 * Math.PI * 22 * (1 - (savingsRate || 0) / 100)}`}
+                                    transform="rotate(-90 26 26)"
+                                    style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+                                />
+                            </svg>
+                            <span className="ring-value" style={{ color: savingsRate !== null ? savingsColor : '#888' }}>
+                                {savingsRate !== null ? `${savingsRate}%` : 'N/A'}
+                            </span>
+                        </div>
+                        <div className="stat-info">
+                            <span className="stat-label">Savings Rate</span>
+                            <span className="stat-value" style={{ color: savingsRate !== null ? savingsColor : '#888' }}>
+                                {savingsRate !== null
+                                    ? savingsRate >= 50 ? 'Excellent!' : savingsRate >= 20 ? 'Good' : 'Low'
+                                    : 'No Income'}
                             </span>
                         </div>
                     </div>
@@ -78,14 +121,14 @@ function Dashboard() {
                                         <div className="range-item">
                                             <span className="range-label">Min</span>
                                             <span className="range-value">
-                                                {rupees}{incomes.length > 0 ? Math.min(...incomes.map(item => item.amount)).toLocaleString('en-IN') : '0'}
+                                                {rupees}{filteredIncomes.length > 0 ? Math.min(...filteredIncomes.map(item => item.amount)).toLocaleString('en-IN') : '0'}
                                             </span>
                                         </div>
                                         <div className="range-divider"></div>
                                         <div className="range-item">
                                             <span className="range-label">Max</span>
                                             <span className="range-value">
-                                                {rupees}{incomes.length > 0 ? Math.max(...incomes.map(item => item.amount)).toLocaleString('en-IN') : '0'}
+                                                {rupees}{filteredIncomes.length > 0 ? Math.max(...filteredIncomes.map(item => item.amount)).toLocaleString('en-IN') : '0'}
                                             </span>
                                         </div>
                                     </div>
@@ -96,14 +139,14 @@ function Dashboard() {
                                         <div className="range-item">
                                             <span className="range-label">Min</span>
                                             <span className="range-value expense-val">
-                                                {rupees}{expenses.length > 0 ? Math.min(...expenses.map(item => item.amount)).toLocaleString('en-IN') : '0'}
+                                                {rupees}{filteredExpenses.length > 0 ? Math.min(...filteredExpenses.map(item => item.amount)).toLocaleString('en-IN') : '0'}
                                             </span>
                                         </div>
                                         <div className="range-divider"></div>
                                         <div className="range-item">
                                             <span className="range-label">Max</span>
                                             <span className="range-value expense-val">
-                                                {rupees}{expenses.length > 0 ? Math.max(...expenses.map(item => item.amount)).toLocaleString('en-IN') : '0'}
+                                                {rupees}{filteredExpenses.length > 0 ? Math.max(...filteredExpenses.map(item => item.amount)).toLocaleString('en-IN') : '0'}
                                             </span>
                                         </div>
                                     </div>
@@ -122,11 +165,22 @@ function Dashboard() {
     );
 }
 
+
 const DashboardStyled = styled.div`
+    /* Dashboard Header with Date Filter */
+    .dashboard-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 0.3rem;
+    }
+
     /* Stat Cards */
     .stat-cards {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 1.2rem;
         margin: 1.2rem 0 1.5rem;
     }
@@ -177,6 +231,29 @@ const DashboardStyled = styled.div`
 
     .balance-negative-icon {
         background: linear-gradient(135deg, #E74C3C, #F2994A);
+    }
+
+    .savings-card {
+        .savings-ring {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+
+            svg {
+                display: block;
+            }
+
+            .ring-value {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 0.72rem;
+                font-weight: 800;
+                line-height: 1;
+            }
+        }
     }
 
     .stat-info {
@@ -321,6 +398,10 @@ const DashboardStyled = styled.div`
 
     /* Responsive */
     @media (max-width: 1200px) {
+        .stat-cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
         .dashboard-grid {
             grid-template-columns: 1fr;
         }
@@ -331,6 +412,12 @@ const DashboardStyled = styled.div`
     }
 
     @media (max-width: 900px) {
+        .dashboard-header {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
         h1 {
             text-align: center;
         }
