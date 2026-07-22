@@ -9,7 +9,7 @@ import History from '../History/History';
 import DateFilter, { getDateRange, filterByDateRange } from '../DateFilter/DateFilter';
 
 function Dashboard() {
-    const { incomes, expenses, getIncomes, getExpenses } = useGlobalContext();
+    const { incomes, expenses, getIncomes, getExpenses, processRecurring, loading } = useGlobalContext();
     const [datePreset, setDatePreset] = useState('month');
 
     useEffect(() => {
@@ -35,7 +35,18 @@ function Dashboard() {
             <InnerLayout>
                 <div className="dashboard-header">
                     <h1>Dashboard</h1>
-                    <DateFilter activePreset={datePreset} onPresetChange={setDatePreset} />
+                    <div className="header-actions">
+                        <button
+                            className="sync-recurring-btn"
+                            onClick={processRecurring}
+                            disabled={loading}
+                            title="Auto-add recurring transactions for this month"
+                        >
+                            <i className={`fa-solid fa-rotate ${loading ? 'fa-spin' : ''}`}></i>
+                            Sync Recurring
+                        </button>
+                        <DateFilter activePreset={datePreset} onPresetChange={setDatePreset} />
+                    </div>
                 </div>
 
                 {/* Stat Cards Row */}
@@ -175,6 +186,44 @@ const DashboardStyled = styled.div`
         flex-wrap: wrap;
         gap: 1rem;
         margin-bottom: 0.3rem;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .sync-recurring-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.4rem 0.9rem;
+        border: 2px solid transparent;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #6C63FF, #5DADE2);
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        white-space: nowrap;
+
+        i {
+            font-size: 0.75rem;
+        }
+
+        &:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 12px rgba(108, 99, 255, 0.3);
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     }
 
     /* Stat Cards */

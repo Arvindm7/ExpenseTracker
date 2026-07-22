@@ -33,4 +33,5 @@ export const shopping = <i className="fa-solid fa-bag-shopping"></i>
 export const entertainment = <i className="fa-solid fa-film"></i>
 export const fuel = <i className="fa-solid fa-gas-pump"></i>
 export const rent = <i className="fa-solid fa-house"></i>
-export const insurance = <i className="fa-solid fa-shield-halved"></i>
+export const insurance = <i className="fa-solid fa-shield-halved"></i>
+export const analytics = <i className="fa-solid fa-chart-column"></i>

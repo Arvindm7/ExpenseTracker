@@ -8,6 +8,7 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import Income from "./Components/Income/Income";
 import Expenses from "./Components/Expenses/Expenses";
 import Transactions from "./Components/Transactions/Transactions";
+import Analytics from "./Components/Analytics/Analytics";
 import Landing from "./Components/Landing/Landing";
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
@@ -29,6 +30,8 @@ function App() {
         return <Income />;
       case 4:
         return <Expenses />;
+      case 5:
+        return <Analytics />;
       default:
         return <Dashboard />;
     }

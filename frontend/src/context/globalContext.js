@@ -13,6 +13,7 @@ export const GlobalProvider = ({ children }) => {
   // State to store incomes, expenses, error messages, and loading
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
+  const [budgets, setBudgets] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -145,12 +146,6 @@ export const GlobalProvider = ({ children }) => {
     return totalIncome() - totalExpenses();
   };
 
-  // Function to clear all data on logout
-  const clearData = () => {
-    setIncomes([]);
-    setExpenses([]);
-    setError(null);
-  };
 
   // Function to update an income
   const updateIncome = async (id, incomeData) => {
@@ -184,6 +179,83 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  // ---- Budget Functions ----
+
+  // Function to set or update a budget for a category
+  const setBudgetLimit = async (budgetData) => {
+    try {
+      setLoading(true);
+      await axios.post(`${BASE_URL}set-budget`, budgetData, getAuthConfig());
+      await getBudgets(budgetData.month, budgetData.year);
+      toast.success("Budget set successfully!");
+    } catch (err) {
+      const message = err.response?.data?.message || "Failed to set budget";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function to get budgets for a specific month/year
+  const getBudgets = async (month, year) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${BASE_URL}get-budgets?month=${month}&year=${year}`,
+        getAuthConfig()
+      );
+      setBudgets(response.data);
+    } catch (err) {
+      toast.error("Failed to fetch budgets");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function to delete a budget
+  const deleteBudget = async (id, month, year) => {
+    try {
+      setLoading(true);
+      await axios.delete(`${BASE_URL}delete-budget/${id}`, getAuthConfig());
+      await getBudgets(month, year);
+      toast.success("Budget removed");
+    } catch (err) {
+      toast.error("Failed to delete budget");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function to clear all data on logout
+  const clearData = () => {
+    setIncomes([]);
+    setExpenses([]);
+    setBudgets([]);
+    setError(null);
+  };
+
+  // Function to process recurring transactions for the current month
+  const processRecurring = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(`${BASE_URL}process-recurring`, {}, getAuthConfig());
+      const { created, message } = response.data;
+      if (created > 0) {
+        await getIncomes();
+        await getExpenses();
+        toast.success(message);
+      } else {
+        toast.info(message);
+      }
+      return response.data;
+    } catch (err) {
+      toast.error("Failed to process recurring transactions");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <globalContext.Provider
       value={{
@@ -205,6 +277,11 @@ export const GlobalProvider = ({ children }) => {
         setError,
         loading,
         clearData,
+        budgets,
+        setBudgetLimit,
+        getBudgets,
+        deleteBudget,
+        processRecurring,
       }}
     >
       {children}

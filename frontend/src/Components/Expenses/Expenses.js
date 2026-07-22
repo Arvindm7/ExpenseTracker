@@ -5,6 +5,7 @@ import { InnerLayout } from '../../styles/Layouts';
 import IncomeItem from '../IncomeItem/IncomeItem';
 import ExpenseForm from './ExpenseForm';
 import EditModal from '../EditModal/EditModal';
+import BudgetTracker from '../BudgetTracker/BudgetTracker';
 import { dateFormat } from '../../utils/dateFormat';
 
 function Expenses() {
@@ -68,7 +69,7 @@ function Expenses() {
                                 </div>
                             )}
                             {expenses.map((expense) => {
-                                const {_id, title, amount, date, category, description, type} = expense;
+                                const {_id, title, amount, date, category, description, type, isRecurring} = expense;
                                 return <IncomeItem
                                     key={_id}
                                     id={_id} 
@@ -81,10 +82,14 @@ function Expenses() {
                                     indicatorColor="#E74C3C"
                                     deleteItem={deleteExpense}
                                     onEdit={setEditingItem}
+                                    isRecurring={isRecurring}
                                 />
                             })}
                         </div>
                     </div>
+                </div>
+                <div className="budget-section">
+                    <BudgetTracker />
                 </div>
             </InnerLayout>
 
@@ -103,6 +108,10 @@ function Expenses() {
 const ExpenseStyled = styled.div`
     display: flex;
     flex: 1;
+
+    .budget-section {
+        margin-top: 1.5rem;
+    }
 
     .page-header {
         display: flex;

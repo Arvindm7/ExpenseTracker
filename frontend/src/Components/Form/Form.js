@@ -17,9 +17,10 @@ function Form(){
         date: '',
         category: '',
         description: '',
+        isRecurring: false,
     })
 
-    const { title, amount, date, category,description } = inputState;
+    const { title, amount, date, category, description, isRecurring } = inputState;
 
     const handleInput = name => e => {
         setInputState({...inputState, [name]: e.target.value})
@@ -35,6 +36,7 @@ function Form(){
             date: '',
             category: '',
             description: '',
+            isRecurring: false,
         })
     }
 
@@ -85,6 +87,20 @@ function Form(){
             </div>
             <div className="input-control">
                 <textarea name="description" value={description} placeholder='Add A Reference' id="description" cols="30" rows="4" onChange={handleInput('description')}></textarea>
+            </div>
+            <div className="recurring-toggle">
+                <label className="toggle-label">
+                    <input
+                        type="checkbox"
+                        checked={isRecurring}
+                        onChange={() => setInputState({...inputState, isRecurring: !isRecurring})}
+                    />
+                    <span className="toggle-slider"></span>
+                    <span className="toggle-text">
+                        <i className="fa-solid fa-rotate"></i>
+                        Recurring Monthly
+                    </span>
+                </label>
             </div>
             <div className="submit-btn">
                 <Button 
@@ -185,6 +201,65 @@ const FormStyled=styled.form`
             &:hover{
                 transform: translateY(-2px);
                 box-shadow: 0 6px 25px rgba(108, 99, 255, 0.4) !important;
+            }
+        }
+    }
+
+    .recurring-toggle {
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            cursor: pointer;
+            user-select: none;
+
+            input {
+                display: none;
+            }
+
+            .toggle-slider {
+                width: 40px;
+                height: 22px;
+                border-radius: 11px;
+                background: ${({ theme }) => theme.borderColor};
+                position: relative;
+                transition: all 0.3s ease;
+                flex-shrink: 0;
+
+                &::after {
+                    content: '';
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background: #fff;
+                    position: absolute;
+                    top: 3px;
+                    left: 3px;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+                }
+            }
+
+            input:checked + .toggle-slider {
+                background: linear-gradient(135deg, #6C63FF, #5DADE2);
+
+                &::after {
+                    left: 21px;
+                }
+            }
+
+            .toggle-text {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                font-size: 0.82rem;
+                font-weight: 600;
+                color: ${({ theme }) => theme.textSecondary};
+
+                i {
+                    font-size: 0.8rem;
+                    color: #6C63FF;
+                }
             }
         }
     }

@@ -69,7 +69,7 @@ function Income(){
                                 </div>
                             )}
                             {incomes.map((income)=>{
-                                const {_id, title, amount , date, category, description,type} = income;
+                                const {_id, title, amount , date, category, description, type, isRecurring} = income;
                                 return <IncomeItem
                                     key={_id}
                                     id={_id}
@@ -82,6 +82,7 @@ function Income(){
                                     indicatorColor="var(--color-green)"
                                     deleteItem={deleteIncome}
                                     onEdit={setEditingItem}
+                                    isRecurring={isRecurring}
                                 />
                             })}
                         </div>

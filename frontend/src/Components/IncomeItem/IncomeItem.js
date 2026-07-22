@@ -13,7 +13,8 @@ function IncomeItem({
     deleteItem,
     onEdit,
     indicatorColor,
-    type
+    type,
+    isRecurring
 }) {
 
     const categoryIcon = () =>{
@@ -81,7 +82,15 @@ function IncomeItem({
         </div>
         <div className="content">
             <div className="title-row">
-                <h5>{title}</h5>
+                <div className="title-with-badge">
+                    <h5>{title}</h5>
+                    {isRecurring && (
+                        <span className="recurring-badge">
+                            <i className="fa-solid fa-rotate"></i>
+                            Recurring
+                        </span>
+                    )}
+                </div>
                 <span className="amount-badge">
                     {type === 'expense' ? '-' : '+'}₹{amount.toLocaleString('en-IN')}
                 </span>
@@ -175,6 +184,13 @@ const IncomeItemStyled = styled.div`
         justify-content: space-between;
         gap: 0.8rem;
 
+        .title-with-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 0;
+        }
+
         h5 {
             font-size: 1.05rem;
             font-weight: 700;
@@ -182,6 +198,26 @@ const IncomeItemStyled = styled.div`
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        .recurring-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #6C63FF;
+            background: rgba(108, 99, 255, 0.1);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            white-space: nowrap;
+            flex-shrink: 0;
+
+            i {
+                font-size: 0.58rem;
+            }
         }
     }
 
