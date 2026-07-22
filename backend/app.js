@@ -20,10 +20,10 @@ app.use(helmet());
 // Logging: Request logger for development/debugging
 app.use(morgan('dev'));
 
-// Rate Limiting: Prevent abuse (100 requests per 15 min per IP)
+// Rate Limiting: Prevent abuse (500 requests per 15 min per IP)
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100,
+    max: 500,
     standardHeaders: true,
     legacyHeaders: false,
     message: { message: 'Too many requests, please try again later.' }
